@@ -707,65 +707,38 @@ const SearchPage: React.FC = () => {
               )}
             </div>
 
-            <div className="space-y-3 sm:space-y-4">
+            <div className="space-y-3">
               {jobs.map((job) => (
                 <div
                   key={job.id}
-                  className="border-2 border-gray-100 rounded-xl p-3 sm:p-4 hover:border-blue-200 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent active:bg-blue-100 cursor-pointer transition-all transform hover:-translate-y-0.5 hover:shadow-md"
-                  onClick={() => handleViewDetails(job)}
+                  className="border-2 border-gray-100 rounded-lg p-4 hover:border-blue-200 hover:bg-blue-50 transition-all"
                 >
-                  {/* Mobile: Stacked, Desktop: Horizontal */}
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 sm:gap-3 mb-2 flex-wrap">
-                        <div className="p-1.5 bg-blue-100 rounded-lg">
-                          <Package className="h-4 w-4 text-blue-600 flex-shrink-0" />
-                        </div>
-                        <h3 className="text-base sm:text-lg font-bold text-gray-900">{job.job_number}</h3>
-                        <span className={`px-3 py-1.5 text-xs font-bold rounded-lg border-2 shadow-sm ${getStatusColor(job.status)}`}>
-                          {job.status}
-                        </span>
-                        {job.shipping_method && (
-                          <span className="px-2.5 py-1 text-xs font-semibold rounded-lg bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 border border-blue-200">
-                            {job.shipping_method}
-                          </span>
-                        )}
-                      </div>
-                      
-                      {/* Mobile: Single column, Tablet+: Two columns */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm text-gray-600">
-                        <div className="flex items-center gap-2">
-                          <User className="h-4 w-4 flex-shrink-0" />
-                          <span className="truncate">{job.customer.name}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Phone className="h-4 w-4 flex-shrink-0" />
-                          <span>{job.customer.contact_number}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Calendar className="h-4 w-4 flex-shrink-0" />
-                          <span className="text-xs sm:text-sm">
-                            <span className="hidden sm:inline">Final Received: </span>
-                            {formatDate(job.final_received_date)}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          {job.received_confirmation ? (
-                            <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />
-                          ) : (
-                            <XCircle className="h-4 w-4 text-red-600 flex-shrink-0" />
-                          )}
-                          <span className="text-xs sm:text-sm">
-                            {job.received_confirmation ? 'Confirmed' : 'Pending'}
-                          </span>
-                        </div>
-                      </div>
+                  <div className="flex items-center justify-between gap-4 flex-wrap">
+                    {/* Job Number */}
+                    <div className="flex items-center gap-2 min-w-[120px]">
+                      <Package className="h-5 w-5 text-blue-600 flex-shrink-0" />
+                      <span className="font-bold text-gray-900">{job.job_number}</span>
                     </div>
                     
-                    {/* Touch-friendly button */}
-                    <button className="min-h-[44px] px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-lg transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center gap-2">
+                    {/* Contact Number */}
+                    <div className="flex items-center gap-2 min-w-[140px]">
+                      <Phone className="h-5 w-5 text-green-600 flex-shrink-0" />
+                      <span className="text-gray-700">{job.customer.contact_number}</span>
+                    </div>
+                    
+                    {/* Current Status */}
+                    <div className="flex-grow">
+                      <span className={`px-3 py-1.5 text-xs font-bold rounded-lg border-2 shadow-sm ${getStatusColor(job.status)}`}>
+                        {job.status}
+                      </span>
+                    </div>
+                    
+                    {/* View Details Button */}
+                    <button 
+                      onClick={() => handleViewDetails(job)}
+                      className="px-5 py-2 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-lg transition-all shadow-md hover:shadow-lg"
+                    >
                       View Details
-                      <span className="text-lg">→</span>
                     </button>
                   </div>
                 </div>
