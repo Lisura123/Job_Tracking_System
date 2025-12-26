@@ -9,6 +9,7 @@ const SearchPage: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [loading, setLoading] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+  const [resultType, setResultType] = useState<'recent' | 'search' | 'filter'>('recent');
   
   // Autocomplete state
   const [suggestions, setSuggestions] = useState<{
@@ -107,6 +108,7 @@ const SearchPage: React.FC = () => {
       try {
         const response = await jobService.getAllJobs(1);
         setJobs(response.data);
+        setResultType('recent');
         setPagination({
           currentPage: response.current_page,
           lastPage: response.last_page,
@@ -208,6 +210,7 @@ const SearchPage: React.FC = () => {
       const response = await jobService.getAllJobs(page, undefined, advancedFilters);
       
       setJobs(response.data);
+      setResultType('filter');
       setPagination({
         currentPage: response.current_page,
         lastPage: response.last_page,
@@ -237,6 +240,7 @@ const SearchPage: React.FC = () => {
     try {
       const response = await jobService.search(searchTerm, page);
       setJobs(response.data);
+      setResultType('search');
       setPagination({
         currentPage: response.current_page,
         lastPage: response.last_page,
@@ -622,20 +626,57 @@ const SearchPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Search Results - Card View on Mobile, List on Desktop */}
+        {/* Results Display - Card View on Mobile, List on Desktop */}
         {jobs.length > 0 && (
           <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-4 sm:p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg">
-                <Package className="h-5 w-5 text-white" />
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg">
+                  <Package className="h-5 w-5 text-white" />
+                </div>
+                <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                  <span className="hidden sm:inline">
+                    {resultType === 'recent' && 'Recent Jobs'}
+                    {resultType === 'search' && 'Search Results'}
+                    {resultType === 'filter' && 'Filter Results'}
+                  </span>
+                  <span className="sm:hidden">
+                    {resultType === 'recent' && 'Jobs'}
+                    {resultType === 'search' && 'Results'}
+                    {resultType === 'filter' && 'Filtered'}
+                  </span>
+                </h2>
+                <span className="px-3 py-1 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 rounded-full text-sm font-semibold">
+                  {pagination.total}
+                </span>
               </div>
-              <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                <span className="hidden sm:inline">Recent Jobs</span>
-                <span className="sm:hidden">Jobs</span>
-              </h2>
-              <span className="px-3 py-1 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 rounded-full text-sm font-semibold">
-                {pagination.total}
-              </span>
+              {(resultType === 'search' || resultType === 'filter') && (
+                <button
+                  onClick={async () => {
+                    setLoading(true);
+                    try {
+                      const response = await jobService.getAllJobs(1);
+                      setJobs(response.data);
+                      setResultType('recent');
+                      setQuery('');
+                      handleClearFilters();
+                      setPagination({
+                        currentPage: response.current_page,
+                        lastPage: response.last_page,
+                        total: response.data.length,
+                      });
+                    } catch (error) {
+                      console.error('Failed to load recent jobs:', error);
+                    } finally {
+                      setLoading(false);
+                    }
+                  }}
+                  className="px-4 py-2 text-sm font-semibold text-red-600 border-2 border-red-200 rounded-lg hover:bg-red-50 hover:border-red-300 transition-all shadow-sm flex items-center gap-2"
+                >
+                  <X className="h-4 w-4" />
+                  <span className="hidden sm:inline">Clear</span>
+                </button>
+              )}
             </div>
 
             <div className="space-y-3 sm:space-y-4">
