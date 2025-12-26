@@ -38,10 +38,12 @@ class SearchController extends Controller
         $finalReceivedDateFrom = $request->input('final_received_date_from');
         $finalReceivedDateTo = $request->input('final_received_date_to');
 
-        // Search by job number, customer name, or customer phone
+        // Search by job number, customer name, customer phone, original case number, or CLK case number
         $jobsQuery = Job::with(['customer', 'items', 'trackingDetails'])
             ->where(function($q) use ($query) {
                 $q->where('job_number', 'LIKE', "%{$query}%")
+                  ->orWhere('original_case_number', 'LIKE', "%{$query}%")
+                  ->orWhere('clk_case_number', 'LIKE', "%{$query}%")
                   ->orWhereHas('customer', function ($customerQuery) use ($query) {
                       $customerQuery->where('contact_number', 'LIKE', "%{$query}%")
                                    ->orWhere('name', 'LIKE', "%{$query}%");
@@ -223,10 +225,30 @@ class SearchController extends Controller
             ->unique()
             ->values();
 
+        // Get matching original case numbers
+        $originalCaseNumbers = Job::where('original_case_number', 'LIKE', "%{$query}%")
+            ->whereNotNull('original_case_number')
+            ->where('original_case_number', '!=', '')
+            ->limit($limit)
+            ->pluck('original_case_number')
+            ->unique()
+            ->values();
+
+        // Get matching CLK case numbers
+        $clkCaseNumbers = Job::where('clk_case_number', 'LIKE', "%{$query}%")
+            ->whereNotNull('clk_case_number')
+            ->where('clk_case_number', '!=', '')
+            ->limit($limit)
+            ->pluck('clk_case_number')
+            ->unique()
+            ->values();
+
         return response()->json([
             'job_numbers' => $jobNumbers,
             'customer_names' => $customerNames,
             'phone_numbers' => $phoneNumbers,
+            'original_case_numbers' => $originalCaseNumbers,
+            'clk_case_numbers' => $clkCaseNumbers,
         ]);
     }
 

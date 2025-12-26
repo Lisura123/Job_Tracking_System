@@ -15,7 +15,9 @@ const SearchPage: React.FC = () => {
     job_numbers: string[];
     customer_names: string[];
     phone_numbers: string[];
-  }>({ job_numbers: [], customer_names: [], phone_numbers: [] });
+    original_case_numbers: string[];
+    clk_case_numbers: string[];
+  }>({ job_numbers: [], customer_names: [], phone_numbers: [], original_case_numbers: [], clk_case_numbers: [] });
   const [showSuggestions, setShowSuggestions] = useState(false);
   const suggestionRef = useRef<HTMLDivElement>(null);
   
@@ -76,7 +78,7 @@ const SearchPage: React.FC = () => {
   useEffect(() => {
     const fetchSuggestions = async () => {
       if (query.trim().length === 0) {
-        setSuggestions({ job_numbers: [], customer_names: [], phone_numbers: [] });
+        setSuggestions({ job_numbers: [], customer_names: [], phone_numbers: [], original_case_numbers: [], clk_case_numbers: [] });
         setShowSuggestions(false);
         return;
       }
@@ -87,7 +89,7 @@ const SearchPage: React.FC = () => {
         setShowSuggestions(true);
       } catch (error) {
         // Silently fail for suggestions
-        setSuggestions({ job_numbers: [], customer_names: [], phone_numbers: [] });
+        setSuggestions({ job_numbers: [], customer_names: [], phone_numbers: [], original_case_numbers: [], clk_case_numbers: [] });
       }
     };
 
@@ -281,7 +283,7 @@ const SearchPage: React.FC = () => {
                 />
                 
                 {/* Autocomplete Dropdown */}
-                {showSuggestions && (suggestions.job_numbers.length > 0 || suggestions.customer_names.length > 0 || suggestions.phone_numbers.length > 0) && (
+                {showSuggestions && (suggestions.job_numbers.length > 0 || suggestions.customer_names.length > 0 || suggestions.phone_numbers.length > 0 || suggestions.original_case_numbers.length > 0 || suggestions.clk_case_numbers.length > 0) && (
                   <div className="absolute z-50 w-full mt-1 bg-white border-2 border-gray-200 rounded-lg shadow-lg max-h-96 overflow-y-auto">
                     {/* Job Numbers */}
                     {suggestions.job_numbers.length > 0 && (
@@ -298,6 +300,46 @@ const SearchPage: React.FC = () => {
                           >
                             <Package className="h-4 w-4 text-blue-500" />
                             {jobNumber}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                    
+                    {/* Original Case Numbers */}
+                    {suggestions.original_case_numbers.length > 0 && (
+                      <div className="border-b border-gray-100">
+                        <div className="px-3 py-2 bg-gray-50 text-xs font-semibold text-gray-600 flex items-center gap-2">
+                          <Package className="h-3.5 w-3.5" />
+                          Original Case Numbers
+                        </div>
+                        {suggestions.original_case_numbers.map((caseNumber, index) => (
+                          <button
+                            key={`original-${index}`}
+                            onClick={() => handleSuggestionClick(caseNumber)}
+                            className="w-full px-3 py-2 text-left hover:bg-blue-50 text-sm text-gray-700 transition-colors flex items-center gap-2"
+                          >
+                            <Package className="h-4 w-4 text-orange-500" />
+                            {caseNumber}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                    
+                    {/* CLK Case Numbers */}
+                    {suggestions.clk_case_numbers.length > 0 && (
+                      <div className="border-b border-gray-100">
+                        <div className="px-3 py-2 bg-gray-50 text-xs font-semibold text-gray-600 flex items-center gap-2">
+                          <Package className="h-3.5 w-3.5" />
+                          CLK Case Numbers
+                        </div>
+                        {suggestions.clk_case_numbers.map((caseNumber, index) => (
+                          <button
+                            key={`clk-${index}`}
+                            onClick={() => handleSuggestionClick(caseNumber)}
+                            className="w-full px-3 py-2 text-left hover:bg-blue-50 text-sm text-gray-700 transition-colors flex items-center gap-2"
+                          >
+                            <Package className="h-4 w-4 text-indigo-500" />
+                            {caseNumber}
                           </button>
                         ))}
                       </div>

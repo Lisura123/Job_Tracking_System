@@ -119,6 +119,8 @@ export const jobService = {
     job_numbers: string[];
     customer_names: string[];
     phone_numbers: string[];
+    original_case_numbers: string[];
+    clk_case_numbers: string[];
   }> {
     const { data } = await api.get('/search/suggestions', {
       params: { query, limit },
