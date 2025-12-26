@@ -1,0 +1,36 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to Production Server
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Deploy to Hostinger via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd public_html/job-tracking-system
+            git pull origin main
+            cd backend
+            composer install --no-dev --optimize-autoloader --no-interaction
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            php artisan optimize
+            chmod -R 755 storage bootstrap/cache
+            echo "✅ Deployment completed!"
