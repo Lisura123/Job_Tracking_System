@@ -631,8 +631,8 @@ const SearchPage: React.FC = () => {
                   <Package className="h-5 w-5 text-white" />
                 </div>
                 <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                  <span className="hidden sm:inline">Search Results</span>
-                  <span className="sm:hidden">Results</span>
+                  <span className="hidden sm:inline">Recent Jobs</span>
+                  <span className="sm:hidden">Jobs</span>
                 </h2>
                 <span className="px-3 py-1 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 rounded-full text-sm font-semibold">
                   {pagination.total}
@@ -648,7 +648,7 @@ const SearchPage: React.FC = () => {
                 className="px-4 py-2 text-sm font-semibold text-red-600 border-2 border-red-200 rounded-lg hover:bg-red-50 hover:border-red-300 transition-all shadow-sm flex items-center gap-2"
               >
                 <X className="h-4 w-4" />
-                <span className="hidden sm:inline">Reset</span>
+                <span className="hidden sm:inline">Clear</span>
               </button>
             </div>
 
