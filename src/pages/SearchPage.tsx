@@ -920,9 +920,9 @@ const SearchPage: React.FC = () => {
                   {expandedSections.timeline && (
                     <div className="p-4 space-y-3">
                       {[
-                        { label: 'CameraLK Shipped Date', date: selectedJob.lk_shipped_date, remark: selectedJob.tracking_details?.shipping_agent_name },
+                        { label: 'CameraLK Shipped Date', date: selectedJob.lk_shipped_date, method: selectedJob.lk_shipping_method, remark: selectedJob.tracking_details?.shipping_agent_name },
                         { label: 'Company Received Date', date: selectedJob.company_received_date, remark: selectedJob.received_confirmation_by },
-                        { label: 'Supplier Shipping Date', date: selectedJob.supplier_shipping_date, method: selectedJob.shipping_method },
+                        { label: 'Supplier Shipping Date', date: selectedJob.supplier_shipping_date, method: selectedJob.supplier_shipping_method },
                         { label: 'Warehouse Received Date (Singapore)', date: selectedJob.warehouse_received_date, person: selectedJob.sg_received_by_name },
                         { label: 'Received by CameraLK Representative', date: selectedJob.received_confirmation_by, person: selectedJob.clk_received_by_name },
                         { label: 'Shipping Arranged from Singapore Date', date: selectedJob.shipped_from_singapore_date },

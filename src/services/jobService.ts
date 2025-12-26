@@ -32,7 +32,8 @@ export interface Job {
   original_case_number?: string;
   clk_case_number?: string;
   lk_shipped_date?: string;
-  shipping_method?: string;
+  lk_shipping_method?: string;
+  supplier_shipping_method?: string;
   company_received_date?: string;
   supplier_shipping_date?: string;
   warehouse_received_date?: string;
@@ -67,7 +68,8 @@ export interface JobFormData {
   original_case_number?: string;
   clk_case_number?: string;
   lk_shipped_date?: string;
-  shipping_method?: string;
+  lk_shipping_method?: string;
+  supplier_shipping_method?: string;
   company_received_date?: string;
   supplier_shipping_date?: string;
   warehouse_received_date?: string;

@@ -197,7 +197,7 @@ const DataEntryDashboard: React.FC = () => {
                           <tr key={job.id} className="hover:bg-gray-50">
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{job.job_number}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{job.customer.name}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{job.shipping_method || 'N/A'}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{job.lk_shipping_method || job.supplier_shipping_method || 'N/A'}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatDate(job.final_received_date)}</td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(job.status)}`}>
@@ -246,7 +246,7 @@ const DataEntryDashboard: React.FC = () => {
                         <div className="space-y-1 text-xs text-gray-600 mb-3">
                           <div className="flex justify-between">
                             <span className="font-medium">Shipping:</span>
-                            <span>{job.shipping_method || 'N/A'}</span>
+                            <span>{job.lk_shipping_method || job.supplier_shipping_method || 'N/A'}</span>
                           </div>
                           <div className="flex justify-between">
                             <span className="font-medium">Final Received:</span>

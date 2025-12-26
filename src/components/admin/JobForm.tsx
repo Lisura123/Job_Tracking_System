@@ -26,7 +26,8 @@ const JobForm: React.FC<JobFormProps> = ({ job, onClose }) => {
     original_case_number: '',
     clk_case_number: '',
     lk_shipped_date: '',
-    shipping_method: undefined,
+    lk_shipping_method: undefined,
+    supplier_shipping_method: undefined,
     company_received_date: '',
     supplier_shipping_date: '',
     warehouse_received_date: '',
@@ -64,7 +65,7 @@ const JobForm: React.FC<JobFormProps> = ({ job, onClose }) => {
         // Extract unique shipping methods
         const methods = [...new Set(
           jobs
-            .map(j => j.shipping_method)
+            .flatMap(j => [j.lk_shipping_method, j.supplier_shipping_method])
             .filter(method => method && method.trim() !== '')
         )] as string[];
         
@@ -99,10 +100,11 @@ const JobForm: React.FC<JobFormProps> = ({ job, onClose }) => {
         job_number: job.job_number,
         customer_id: job.customer_id,
         company_name: job.company_name || '',
-        original_case_number: job.original_case_number || '',
-        clk_case_number: job.clk_case_number || '',
+        original_case_number: job.original_case_number,
+        clk_case_number: job.clk_case_number,
         lk_shipped_date: formatDateForInput(job.lk_shipped_date),
-        shipping_method: job.shipping_method,
+        lk_shipping_method: job.lk_shipping_method,
+        supplier_shipping_method: job.supplier_shipping_method,
         company_received_date: formatDateForInput(job.company_received_date),
         supplier_shipping_date: formatDateForInput(job.supplier_shipping_date),
         warehouse_received_date: formatDateForInput(job.warehouse_received_date),
@@ -422,8 +424,8 @@ const JobForm: React.FC<JobFormProps> = ({ job, onClose }) => {
                     type="text"
                     list="shipping-methods"
                     className="px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all hover:border-green-400"
-                    value={formData.shipping_method || ''}
-                    onChange={(e) => handleInputChange('shipping_method', e.target.value || undefined)}
+                    value={formData.lk_shipping_method || ''}
+                    onChange={(e) => handleInputChange('lk_shipping_method', e.target.value || undefined)}
                     placeholder="Enter shipping method"
                   />
                   <datalist id="shipping-methods">
@@ -503,8 +505,8 @@ const JobForm: React.FC<JobFormProps> = ({ job, onClose }) => {
                     type="text"
                     list="shipping-methods"
                     className="px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all hover:border-green-400"
-                    value={formData.shipping_method || ''}
-                    onChange={(e) => handleInputChange('shipping_method', e.target.value || undefined)}
+                    value={formData.supplier_shipping_method || ''}
+                    onChange={(e) => handleInputChange('supplier_shipping_method', e.target.value || undefined)}
                     placeholder="Enter shipping method"
                   />
                   <input
