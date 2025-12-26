@@ -148,6 +148,40 @@ const SearchPage: React.FC = () => {
            shippedFromSgDate || finalReceivedDate || statusFilter;
   };
 
+  const handleResetPage = async () => {
+    setLoading(true);
+    try {
+      // Clear all filters
+      setTrackingNumber('');
+      setCompanyName('');
+      setOriginalCaseNumber('');
+      setClkCaseNumber('');
+      setLkShippedDate('');
+      setCompanyReceivedDate('');
+      setSupplierShippingDate('');
+      setWarehouseReceivedDate('');
+      setShippedFromSgDate('');
+      setFinalReceivedDate('');
+      setStatusFilter('');
+      setQuery('');
+      
+      // Load recent jobs
+      const response = await jobService.getAllJobs(1);
+      setJobs(response.data);
+      setResultType('recent');
+      setPagination({
+        currentPage: response.current_page,
+        lastPage: response.last_page,
+        total: response.data.length,
+      });
+    } catch (error) {
+      console.error('Failed to reset page:', error);
+      toast.error('Failed to reset page');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleClearFilters = () => {
     setTrackingNumber('');
     setCompanyName('');
@@ -280,11 +314,22 @@ const SearchPage: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Search Header - Responsive */}
         <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-4 sm:p-6 mb-4 sm:mb-6">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg">
-              <Search className="h-6 w-6 text-white" />
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg">
+                <Search className="h-6 w-6 text-white" />
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Job Tracking & Search</h1>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Job Tracking & Search</h1>
+            <button
+              onClick={handleResetPage}
+              disabled={loading}
+              className="px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-100 border-2 border-gray-200 rounded-lg hover:bg-gray-200 hover:border-gray-300 transition-all shadow-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <X className="h-4 w-4" />
+              <span className="hidden sm:inline">Reset Page</span>
+              <span className="sm:hidden">Reset</span>
+            </button>
           </div>
           
           {/* Search Section */}
@@ -652,26 +697,9 @@ const SearchPage: React.FC = () => {
               </div>
               {(resultType === 'search' || resultType === 'filter') && (
                 <button
-                  onClick={async () => {
-                    setLoading(true);
-                    try {
-                      const response = await jobService.getAllJobs(1);
-                      setJobs(response.data);
-                      setResultType('recent');
-                      setQuery('');
-                      handleClearFilters();
-                      setPagination({
-                        currentPage: response.current_page,
-                        lastPage: response.last_page,
-                        total: response.data.length,
-                      });
-                    } catch (error) {
-                      console.error('Failed to load recent jobs:', error);
-                    } finally {
-                      setLoading(false);
-                    }
-                  }}
-                  className="px-4 py-2 text-sm font-semibold text-red-600 border-2 border-red-200 rounded-lg hover:bg-red-50 hover:border-red-300 transition-all shadow-sm flex items-center gap-2"
+                  onClick={handleResetPage}
+                  disabled={loading}
+                  className="px-4 py-2 text-sm font-semibold text-red-600 border-2 border-red-200 rounded-lg hover:bg-red-50 hover:border-red-300 transition-all shadow-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <X className="h-4 w-4" />
                   <span className="hidden sm:inline">Clear</span>
