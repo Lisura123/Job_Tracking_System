@@ -40,6 +40,7 @@ class SearchController extends Controller
 
         // Search by job number, customer name, customer phone, original case number, or CLK case number
         $jobsQuery = Job::with(['customer', 'items', 'trackingDetails'])
+            ->latest()
             ->where(function($q) use ($query) {
                 $q->where('job_number', 'LIKE', "%{$query}%")
                   ->orWhere('original_case_number', 'LIKE', "%{$query}%")
