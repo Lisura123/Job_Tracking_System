@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Search routes (available to all authenticated users)
     Route::get('/search', [SearchController::class, 'search']);
     Route::get('/search/suggestions', [SearchController::class, 'suggestions']);
+    Route::get('/search/jobs', [SearchController::class, 'index']); // Get all jobs for viewers
     Route::get('/jobs/{id}', [SearchController::class, 'show']);
 
     // Jobs and Customers management (admin + data entry only)

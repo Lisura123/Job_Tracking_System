@@ -140,14 +140,29 @@ export const jobService = {
   },
 
   async getAllJobs(page: number = 1, status?: string, advancedFilters?: AdvancedFilters): Promise<PaginatedResponse<Job>> {
-    const { data } = await api.get<PaginatedResponse<Job>>('/jobs', {
-      params: { 
-        page, 
-        status,
-        ...(advancedFilters || {})
-      },
-    });
-    return data;
+    try {
+      // Try the regular jobs endpoint first (for admin/data entry users)
+      const { data } = await api.get<PaginatedResponse<Job>>('/jobs', {
+        params: { 
+          page, 
+          status,
+          ...(advancedFilters || {})
+        },
+      });
+      return data;
+    } catch (error: any) {
+      // If forbidden (viewer role), use the search/jobs endpoint
+      if (error.response?.status === 403) {
+        const { data } = await api.get<PaginatedResponse<Job>>('/search/jobs', {
+          params: { 
+            page,
+            per_page: 15
+          },
+        });
+        return data;
+      }
+      throw error;
+    }
   },
 
   async createJob(jobData: JobFormData): Promise<Job> {

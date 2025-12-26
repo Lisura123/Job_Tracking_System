@@ -262,4 +262,18 @@ class SearchController extends Controller
 
         return response()->json($job);
     }
+
+    /**
+     * Get all jobs (accessible to all authenticated users including viewers)
+     */
+    public function index(Request $request)
+    {
+        $perPage = $request->input('per_page', 15);
+        
+        $jobs = Job::with(['customer', 'items', 'trackingDetails'])
+            ->latest()
+            ->paginate($perPage);
+
+        return response()->json($jobs);
+    }
 }
