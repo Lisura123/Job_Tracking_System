@@ -100,6 +100,28 @@ const SearchPage: React.FC = () => {
     return () => clearTimeout(debounceTimer);
   }, [query]);
 
+  // Load all recent jobs on page load
+  useEffect(() => {
+    const loadRecentJobs = async () => {
+      setLoading(true);
+      try {
+        const response = await jobService.getAllJobs(1);
+        setJobs(response.data);
+        setPagination({
+          currentPage: response.current_page,
+          lastPage: response.last_page,
+          total: response.data.length,
+        });
+      } catch (error) {
+        console.error('Failed to load recent jobs:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadRecentJobs();
+  }, []);
+
   // Close suggestions when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
