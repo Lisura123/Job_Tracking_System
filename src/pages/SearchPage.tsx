@@ -923,9 +923,10 @@ const SearchPage: React.FC = () => {
                         { label: 'CameraLK Shipped Date', date: selectedJob.lk_shipped_date, remark: selectedJob.tracking_details?.shipping_agent_name },
                         { label: 'Company Received Date', date: selectedJob.company_received_date, remark: selectedJob.received_confirmation_by },
                         { label: 'Supplier Shipping Date', date: selectedJob.supplier_shipping_date, method: selectedJob.shipping_method },
-                        { label: 'Warehouse Received Date (Singapore)', date: selectedJob.warehouse_received_date },
+                        { label: 'Warehouse Received Date (Singapore)', date: selectedJob.warehouse_received_date, person: selectedJob.sg_received_by_name },
+                        { label: 'Received by CameraLK Representative', date: selectedJob.received_confirmation_by, person: selectedJob.clk_received_by_name },
                         { label: 'Shipping Arranged from Singapore Date', date: selectedJob.shipped_from_singapore_date },
-                        { label: 'Service CameraLK Received Date', date: selectedJob.final_received_date, person: selectedJob.received_by_person_name },
+                        { label: 'Service CameraLK Received Date', date: selectedJob.final_received_date, person: selectedJob.final_received_by_name },
                       ].map((item, index) => (
                         <div key={index} className="bg-gray-50 p-3 rounded-lg">
                           <div className="flex items-start gap-3">

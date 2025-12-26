@@ -34,7 +34,9 @@ const JobForm: React.FC<JobFormProps> = ({ job, onClose }) => {
     sg: false,
     shipped_from_singapore_date: '',
     final_received_date: '',
-    received_by_person_name: '',
+    sg_received_by_name: '',
+    clk_received_by_name: '',
+    final_received_by_name: '',
     received_confirmation: false,
     service_confirmation: false,
     items: [{ name: '', serial_number: '' }],
@@ -106,9 +108,11 @@ const JobForm: React.FC<JobFormProps> = ({ job, onClose }) => {
         warehouse_received_date: formatDateForInput(job.warehouse_received_date),
         received_confirmation_by: job.received_confirmation_by || '',
         sg: job.sg || false,
+        sg_received_by_name: job.sg_received_by_name || '',
         shipped_from_singapore_date: formatDateForInput(job.shipped_from_singapore_date),
         final_received_date: formatDateForInput(job.final_received_date),
-        received_by_person_name: job.received_by_person_name || '',
+        clk_received_by_name: job.clk_received_by_name || '',
+        final_received_by_name: job.final_received_by_name || '',
         received_confirmation: job.received_confirmation,
         service_confirmation: job.service_confirmation || false,
         items: job.items.length > 0 ? job.items : [{ name: '', serial_number: '' }],
@@ -559,8 +563,8 @@ const JobForm: React.FC<JobFormProps> = ({ job, onClose }) => {
                   <input
                     type="text"
                     className="px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                    value={formData.received_by_person_name}
-                    onChange={(e) => handleInputChange('received_by_person_name', e.target.value)}
+                    value={formData.sg_received_by_name}
+                    onChange={(e) => handleInputChange('sg_received_by_name', e.target.value)}
                     placeholder="Enter name"
                   />
                 </div>
@@ -589,8 +593,8 @@ const JobForm: React.FC<JobFormProps> = ({ job, onClose }) => {
                   <input
                     type="text"
                     className="px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                    value={formData.received_by_person_name}
-                    onChange={(e) => handleInputChange('received_by_person_name', e.target.value)}
+                    value={formData.clk_received_by_name}
+                    onChange={(e) => handleInputChange('clk_received_by_name', e.target.value)}
                     placeholder="Enter name"
                   />
                   <div className="flex items-center px-4 py-3 border-2 border-gray-300 rounded-lg bg-gradient-to-r from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 transition-all">
@@ -656,8 +660,8 @@ const JobForm: React.FC<JobFormProps> = ({ job, onClose }) => {
                   <input
                     type="text"
                     className="px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                    value={formData.received_by_person_name}
-                    onChange={(e) => handleInputChange('received_by_person_name', e.target.value)}
+                    value={formData.final_received_by_name}
+                    onChange={(e) => handleInputChange('final_received_by_name', e.target.value)}
                     placeholder="Enter person name"
                   />
                 </div>

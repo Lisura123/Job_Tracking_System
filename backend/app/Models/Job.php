@@ -25,9 +25,11 @@ class Job extends Model
         'warehouse_received_date',
         'received_confirmation_by',
         'sg',
+        'sg_received_by_name',
         'shipped_from_singapore_date',
         'final_received_date',
-        'received_by_person_name',
+        'final_received_by_name',
+        'clk_received_by_name',
         'received_confirmation',
         'service_confirmation',
     ];

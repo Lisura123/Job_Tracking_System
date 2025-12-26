@@ -38,9 +38,11 @@ export interface Job {
   warehouse_received_date?: string;
   received_confirmation_by?: string;
   sg?: boolean;
+  sg_received_by_name?: string;
   shipped_from_singapore_date?: string;
   final_received_date?: string;
-  received_by_person_name?: string;
+  final_received_by_name?: string;
+  clk_received_by_name?: string;
   received_confirmation: boolean;
   service_confirmation?: boolean;
   status: string;
@@ -71,9 +73,11 @@ export interface JobFormData {
   warehouse_received_date?: string;
   received_confirmation_by?: string;
   sg?: boolean;
+  sg_received_by_name?: string;
   shipped_from_singapore_date?: string;
   final_received_date?: string;
-  received_by_person_name?: string;
+  final_received_by_name?: string;
+  clk_received_by_name?: string;
   received_confirmation?: boolean;
   service_confirmation?: boolean;
   items?: Item[];
