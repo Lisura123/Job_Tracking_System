@@ -296,6 +296,30 @@ const SearchPage: React.FC = () => {
     }
   };
 
+  const handlePageChange = async (page: number) => {
+    if (resultType === 'search') {
+      await handleSearch(page);
+    } else if (resultType === 'filter') {
+      await handleApplyFilters(page);
+    } else {
+      // Recent jobs pagination
+      setLoading(true);
+      try {
+        const response = await jobService.getAllJobs(page);
+        setJobs(response.data);
+        setPagination({
+          currentPage: response.current_page,
+          lastPage: response.last_page,
+          total: response.data.length,
+        });
+      } catch (error) {
+        toast.error('Failed to load jobs');
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
   const handleViewDetails = (job: Job) => {
     setSelectedJob(job);
   };
@@ -749,7 +773,7 @@ const SearchPage: React.FC = () => {
             {pagination.lastPage > 1 && (
               <div className="mt-6 flex flex-col sm:flex-row justify-center items-center gap-3">
                 <button
-                  onClick={() => handleSearch(pagination.currentPage - 1)}
+                  onClick={() => handlePageChange(pagination.currentPage - 1)}
                   disabled={pagination.currentPage === 1}
                   className="min-h-[44px] w-full sm:w-auto px-6 py-2.5 border-2 border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm hover:shadow"
                 >
@@ -759,7 +783,7 @@ const SearchPage: React.FC = () => {
                   Page {pagination.currentPage} of {pagination.lastPage}
                 </span>
                 <button
-                  onClick={() => handleSearch(pagination.currentPage + 1)}
+                  onClick={() => handlePageChange(pagination.currentPage + 1)}
                   disabled={pagination.currentPage === pagination.lastPage}
                   className="min-h-[44px] w-full sm:w-auto px-6 py-2.5 border-2 border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm hover:shadow"
                 >
