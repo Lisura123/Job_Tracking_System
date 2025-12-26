@@ -46,7 +46,7 @@ const Navbar: React.FC = () => {
                 Search & Track Jobs
               </Link>
               
-              {isAdmin ? (
+              {isAdmin && (
                 <Link
                   to="/admin"
                   className={`px-3 py-2 rounded-md text-sm font-medium ${
@@ -59,7 +59,9 @@ const Navbar: React.FC = () => {
                   <Shield className="h-4 w-4 inline mr-1" />
                   Admin Dashboard
                 </Link>
-              ) : (
+              )}
+              
+              {user?.role === 'user' && (
                 <Link
                   to="/data-entry"
                   className={`px-3 py-2 rounded-md text-sm font-medium ${
@@ -81,7 +83,7 @@ const Navbar: React.FC = () => {
             <div className="text-sm text-gray-700">
               <span className="font-medium">{user?.name}</span>
               <span className="ml-2 px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-700">
-                {isAdmin ? 'Administrator' : 'Data Entry'}
+                {user?.role === 'admin' ? 'Administrator' : user?.role === 'user' ? 'Data Entry' : 'View Only'}
               </span>
             </div>
             <button
@@ -119,7 +121,7 @@ const Navbar: React.FC = () => {
               <p className="text-sm font-medium text-gray-900">{user?.name}</p>
               <p className="text-xs text-gray-500 mt-1">
                 <span className="px-2 py-1 rounded-full bg-gray-200 text-gray-700">
-                  {isAdmin ? 'Administrator' : 'Data Entry'}
+                  {user?.role === 'admin' ? 'Administrator' : user?.role === 'user' ? 'Data Entry' : 'View Only'}
                 </span>
               </p>
             </div>
@@ -138,7 +140,7 @@ const Navbar: React.FC = () => {
               Search & Track Jobs
             </Link>
             
-            {isAdmin ? (
+            {isAdmin && (
               <Link
                 to="/admin"
                 className={`min-h-[44px] flex items-center px-3 py-3 rounded-md text-base font-medium ${
@@ -151,7 +153,9 @@ const Navbar: React.FC = () => {
                 <Shield className="h-5 w-5 mr-3" />
                 Admin Dashboard
               </Link>
-            ) : (
+            )}
+            
+            {user?.role === 'user' && (
               <Link
                 to="/data-entry"
                 className={`min-h-[44px] flex items-center px-3 py-3 rounded-md text-base font-medium ${
