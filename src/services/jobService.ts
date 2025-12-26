@@ -1,4 +1,5 @@
 import api from './api';
+import { authService } from './authService';
 
 export interface Customer {
   id: number;
@@ -140,34 +141,20 @@ export const jobService = {
   },
 
   async getAllJobs(page: number = 1, status?: string, advancedFilters?: AdvancedFilters): Promise<PaginatedResponse<Job>> {
-    try {
-      // Try the regular jobs endpoint first (for admin/data entry users)
-      const { data } = await api.get<PaginatedResponse<Job>>('/jobs', {
-        params: { 
-          page, 
-          status,
-          ...(advancedFilters || {})
-        },
-      });
-      return data;
-    } catch (error: any) {
-      // If forbidden (viewer role), use the search/jobs endpoint
-      if (error.response?.status === 403 || error.code === 'ERR_BAD_REQUEST') {
-        try {
-          const { data } = await api.get<PaginatedResponse<Job>>('/search/jobs', {
-            params: { 
-              page,
-              per_page: 15
-            },
-          });
-          return data;
-        } catch (fallbackError) {
-          console.error('Fallback to search/jobs also failed:', fallbackError);
-          throw fallbackError;
-        }
-      }
-      throw error;
-    }
+    // Check user role to determine which endpoint to use
+    const user = authService.getCurrentUser();
+    const isViewer = user?.role === 'viewer';
+
+    // Viewers use the search/jobs endpoint, others use the jobs endpoint
+    const endpoint = isViewer ? '/search/jobs' : '/jobs';
+    
+    const { data } = await api.get<PaginatedResponse<Job>>(endpoint, {
+      params: { 
+        page,
+        ...(isViewer ? { per_page: 15 } : { status, ...(advancedFilters || {}) })
+      },
+    });
+    return data;
   },
 
   async createJob(jobData: JobFormData): Promise<Job> {
