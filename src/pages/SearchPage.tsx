@@ -114,8 +114,9 @@ const SearchPage: React.FC = () => {
           lastPage: response.last_page,
           total: response.data.length,
         });
-      } catch (error) {
+      } catch (error: any) {
         console.error('Failed to load recent jobs:', error);
+        toast.error(error.response?.data?.message || 'Failed to load recent jobs. Please try again.');
       } finally {
         setLoading(false);
       }
@@ -174,9 +175,9 @@ const SearchPage: React.FC = () => {
         lastPage: response.last_page,
         total: response.data.length,
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to reset page:', error);
-      toast.error('Failed to reset page');
+      toast.error(error.response?.data?.message || 'Failed to reset page. Please try again.');
     } finally {
       setLoading(false);
     }

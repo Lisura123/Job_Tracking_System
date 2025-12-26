@@ -152,14 +152,19 @@ export const jobService = {
       return data;
     } catch (error: any) {
       // If forbidden (viewer role), use the search/jobs endpoint
-      if (error.response?.status === 403) {
-        const { data } = await api.get<PaginatedResponse<Job>>('/search/jobs', {
-          params: { 
-            page,
-            per_page: 15
-          },
-        });
-        return data;
+      if (error.response?.status === 403 || error.code === 'ERR_BAD_REQUEST') {
+        try {
+          const { data } = await api.get<PaginatedResponse<Job>>('/search/jobs', {
+            params: { 
+              page,
+              per_page: 15
+            },
+          });
+          return data;
+        } catch (fallbackError) {
+          console.error('Fallback to search/jobs also failed:', fallbackError);
+          throw fallbackError;
+        }
       }
       throw error;
     }
