@@ -559,6 +559,7 @@ const SearchPage: React.FC = () => {
                       className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm bg-white hover:border-green-300 transition-all shadow-sm"
                     >
                       <option value="">All Statuses</option>
+                      <option value="Recent Jobs">Recent Jobs</option>
                       <option value="Ongoing Job">1. Ongoing Job</option>
                       <option value="Shipped from CameraLK">2. Shipped from CameraLK</option>
                       <option value="Received to Company">3. Received to Company</option>

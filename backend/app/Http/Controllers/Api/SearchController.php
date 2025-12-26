@@ -118,7 +118,7 @@ class SearchController extends Controller
         }
 
         // Filter by status if provided
-        if ($status && $status !== '') {
+        if ($status && $status !== '' && $status !== 'Recent Jobs') {
             switch ($status) {
                 case 'Service Completed':
                     $jobsQuery->whereNotNull('final_received_date')
@@ -177,6 +177,11 @@ class SearchController extends Controller
                     ->where('service_confirmation', false);
                     break;
             }
+        }
+        
+        // For 'Recent Jobs', order by most recent first
+        if ($status === 'Recent Jobs') {
+            $jobsQuery->latest();
         }
 
         $jobs = $jobsQuery->paginate(10);
