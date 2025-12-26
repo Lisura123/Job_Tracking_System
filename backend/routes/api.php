@@ -22,9 +22,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/search/suggestions', [SearchController::class, 'suggestions']);
     Route::get('/jobs/{id}', [SearchController::class, 'show']);
 
-    // Jobs and Customers management (available to all authenticated users)
-    Route::apiResource('customers', CustomerController::class);
-    Route::apiResource('jobs', JobController::class)->except(['show']);
+    // Jobs and Customers management (admin + data entry only)
+    Route::middleware('can_manage')->group(function () {
+        Route::apiResource('customers', CustomerController::class);
+        Route::apiResource('jobs', JobController::class)->except(['show']);
+    });
 
     // Admin-only routes
     Route::middleware('admin')->group(function () {

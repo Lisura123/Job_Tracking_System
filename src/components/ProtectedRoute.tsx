@@ -8,8 +8,14 @@ interface ProtectedRouteProps {
   adminOnly?: boolean;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, adminOnly = false }) => {
-  const { isAuthenticated, isAdmin, loading } = useAuth();
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+  adminOnly?: boolean;
+  allowedRoles?: Array<'admin' | 'user' | 'viewer'>;
+}
+
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, adminOnly = false, allowedRoles }) => {
+  const { user, isAuthenticated, isAdmin, loading } = useAuth();
 
   if (loading) {
     return (
@@ -24,6 +30,10 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, adminOnly = f
   }
 
   if (adminOnly && !isAdmin) {
+    return <Navigate to="/search" replace />;
+  }
+
+  if (allowedRoles && user && !allowedRoles.includes(user.role)) {
     return <Navigate to="/search" replace />;
   }
 

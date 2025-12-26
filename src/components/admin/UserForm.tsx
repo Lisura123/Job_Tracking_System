@@ -7,7 +7,7 @@ interface UserFormProps {
     id: number;
     name: string;
     email: string;
-    role: 'admin' | 'user';
+    role: 'admin' | 'user' | 'viewer';
   } | null;
   onSubmit: (data: UserFormData) => void;
   onClose: () => void;
@@ -102,9 +102,10 @@ const UserForm: React.FC<UserFormProps> = ({ user, onSubmit, onClose }) => {
               required
               className="block w-full border border-gray-300 rounded-md shadow-sm py-3 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
               value={formData.role}
-              onChange={(e) => setFormData({ ...formData, role: e.target.value as 'admin' | 'user' })}
+              onChange={(e) => setFormData({ ...formData, role: e.target.value as 'admin' | 'user' | 'viewer' })}
             >
               <option value="user">Data Entry</option>
+              <option value="viewer">View Only (Search)</option>
               <option value="admin">Administrator</option>
             </select>
           </div>

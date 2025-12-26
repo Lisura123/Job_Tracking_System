@@ -4,7 +4,7 @@ export interface User {
   id: number;
   name: string;
   email: string;
-  role: 'admin' | 'user';
+  role: 'admin' | 'user' | 'viewer';
   created_at: string;
   updated_at: string;
 }
@@ -13,7 +13,7 @@ export interface UserFormData {
   name: string;
   email: string;
   password?: string;
-  role: 'admin' | 'user';
+  role: 'admin' | 'user' | 'viewer';
 }
 
 export const userService = {

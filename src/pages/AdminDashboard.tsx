@@ -128,10 +128,20 @@ const AdminDashboard: React.FC = () => {
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.name}</td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.email}</td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                              user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800'
-                            }`}>
-                              {user.role === 'admin' ? 'Administrator' : 'Data Entry'}
+                            <span
+                              className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                                user.role === 'admin'
+                                  ? 'bg-purple-100 text-purple-800'
+                                  : user.role === 'user'
+                                  ? 'bg-green-100 text-green-800'
+                                  : 'bg-blue-100 text-blue-800'
+                              }`}
+                            >
+                              {user.role === 'admin'
+                                ? 'Administrator'
+                                : user.role === 'user'
+                                ? 'Data Entry'
+                                : 'View Only'}
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatDate(user.created_at)}</td>
@@ -166,10 +176,16 @@ const AdminDashboard: React.FC = () => {
                           <h3 className="text-base font-semibold text-gray-900 truncate">{user.name}</h3>
                           <p className="text-sm text-gray-500 truncate">{user.email}</p>
                         </div>
-                        <span className={`ml-2 px-2 py-1 text-xs font-semibold rounded-full flex-shrink-0 ${
-                          user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800'
-                        }`}>
-                          {user.role === 'admin' ? 'Admin' : 'Data Entry'}
+                        <span
+                          className={`ml-2 px-2 py-1 text-xs font-semibold rounded-full flex-shrink-0 ${
+                            user.role === 'admin'
+                              ? 'bg-purple-100 text-purple-800'
+                              : user.role === 'user'
+                              ? 'bg-green-100 text-green-800'
+                              : 'bg-blue-100 text-blue-800'
+                          }`}
+                        >
+                          {user.role === 'admin' ? 'Admin' : user.role === 'user' ? 'Data Entry' : 'View Only'}
                         </span>
                       </div>
                       

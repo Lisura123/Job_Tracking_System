@@ -58,7 +58,7 @@ function App() {
             <Route
               path="/data-entry"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute allowedRoles={['admin', 'user']}>
                   <>
                     <Navbar />
                     <DataEntryDashboard />
