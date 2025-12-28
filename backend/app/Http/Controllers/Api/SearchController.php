@@ -18,7 +18,12 @@ class SearchController extends Controller
         ]);
 
         $query = $request->input('query');
-        $status = $request->input('status');
+        
+        // Check if user is a viewer - viewers cannot use advanced filters or status filters
+        $user = $request->user();
+        $isViewer = $user && $user->role === 'viewer';
+        
+        $status = !$isViewer ? $request->input('status') : null;
         
         // Check if user is a viewer - viewers cannot use advanced filters
         $user = $request->user();
@@ -122,64 +127,66 @@ class SearchController extends Controller
             $jobsQuery->where('final_received_date', '<=', $finalReceivedDateTo);
         }
 
-        // Filter by status if provided
+        // Filter by status if provided (only for non-viewers)
         if ($status && $status !== '') {
             switch ($status) {
-                case 'Service Completed':
-                    $jobsQuery->whereNotNull('final_received_date')
-                              ->where('service_confirmation', true);
+                case 'Job Completed':
+                    $jobsQuery->whereNotNull('final_received_date');
                     break;
                     
-                case 'Shipped from Singapore':
+                case 'Shipping Arranged from Singapore':
                     $jobsQuery->whereNotNull('shipped_from_singapore_date')
-                              ->whereNull('final_received_date')
-                              ->where('service_confirmation', false);
+                              ->whereNull('final_received_date');
                     break;
                     
-                case 'Singapore Processing':
-                    $jobsQuery->where(function($q) {
-                        $q->whereNotNull('warehouse_received_date')
-                          ->orWhere('sg', true);
-                    })
-                    ->whereNull('shipped_from_singapore_date')
-                    ->whereNull('final_received_date')
-                    ->where('service_confirmation', false);
-                    break;
-                    
-                case 'Warehouse Received':
-                    $jobsQuery->whereNotNull('company_received_date')
-                              ->where('received_confirmation', true)
-                              ->whereNull('warehouse_received_date')
-                              ->where('sg', false)
+                case 'Received by CameraLK Representative':
+                    $jobsQuery->whereNotNull('clk_received_date')
                               ->whereNull('shipped_from_singapore_date')
-                              ->whereNull('final_received_date')
-                              ->where('service_confirmation', false);
+                              ->whereNull('final_received_date');
                     break;
                     
-                case 'Shipped from Company':
+                case 'Received to Singapore':
+                    $jobsQuery->whereNotNull('warehouse_received_date')
+                              ->whereNull('clk_received_date')
+                              ->whereNull('shipped_from_singapore_date')
+                              ->whereNull('final_received_date');
+                    break;
+                    
+                case 'Supplier Shipped':
+                    $jobsQuery->whereNotNull('supplier_shipping_date')
+                              ->whereNull('warehouse_received_date')
+                              ->whereNull('clk_received_date')
+                              ->whereNull('shipped_from_singapore_date')
+                              ->whereNull('final_received_date');
+                    break;
+                    
+                case 'Received to Company':
+                    $jobsQuery->whereNotNull('company_received_date')
+                              ->whereNull('supplier_shipping_date')
+                              ->whereNull('warehouse_received_date')
+                              ->whereNull('clk_received_date')
+                              ->whereNull('shipped_from_singapore_date')
+                              ->whereNull('final_received_date');
+                    break;
+                    
+                case 'Shipped from CameraLK':
                     $jobsQuery->whereNotNull('lk_shipped_date')
                               ->whereNull('company_received_date')
+                              ->whereNull('supplier_shipping_date')
                               ->whereNull('warehouse_received_date')
-                              ->where('sg', false)
+                              ->whereNull('clk_received_date')
                               ->whereNull('shipped_from_singapore_date')
-                              ->whereNull('final_received_date')
-                              ->where('service_confirmation', false);
+                              ->whereNull('final_received_date');
                     break;
                     
                 case 'Ongoing Job':
-                    $jobsQuery->where(function($q) {
-                        $q->whereNull('lk_shipped_date')
-                          ->orWhere(function($q2) {
-                              $q2->whereNotNull('lk_shipped_date')
-                                 ->whereNull('company_received_date')
-                                 ->where('received_confirmation', false);
-                          });
-                    })
-                    ->whereNull('warehouse_received_date')
-                    ->where('sg', false)
-                    ->whereNull('shipped_from_singapore_date')
-                    ->whereNull('final_received_date')
-                    ->where('service_confirmation', false);
+                    $jobsQuery->whereNull('lk_shipped_date')
+                              ->whereNull('company_received_date')
+                              ->whereNull('supplier_shipping_date')
+                              ->whereNull('warehouse_received_date')
+                              ->whereNull('clk_received_date')
+                              ->whereNull('shipped_from_singapore_date')
+                              ->whereNull('final_received_date');
                     break;
             }
         }
