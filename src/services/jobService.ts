@@ -38,6 +38,7 @@ export interface Job {
   company_received_date?: string;
   supplier_shipping_date?: string;
   warehouse_received_date?: string;
+  clk_received_date?: string;
   received_confirmation_by?: string;
   sg?: boolean;
   sg_received_by_name?: string;
@@ -74,6 +75,7 @@ export interface JobFormData {
   company_received_date?: string;
   supplier_shipping_date?: string;
   warehouse_received_date?: string;
+  clk_received_date?: string;
   received_confirmation_by?: string;
   sg?: boolean;
   sg_received_by_name?: string;

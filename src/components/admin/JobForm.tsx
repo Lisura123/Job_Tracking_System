@@ -31,6 +31,7 @@ const JobForm: React.FC<JobFormProps> = ({ job, onClose }) => {
     company_received_date: '',
     supplier_shipping_date: '',
     warehouse_received_date: '',
+    clk_received_date: '',
     received_confirmation_by: '',
     sg: false,
     shipped_from_singapore_date: '',
@@ -108,6 +109,7 @@ const JobForm: React.FC<JobFormProps> = ({ job, onClose }) => {
         company_received_date: formatDateForInput(job.company_received_date),
         supplier_shipping_date: formatDateForInput(job.supplier_shipping_date),
         warehouse_received_date: formatDateForInput(job.warehouse_received_date),
+        clk_received_date: formatDateForInput(job.clk_received_date),
         received_confirmation_by: job.received_confirmation_by || '',
         sg: job.sg || false,
         sg_received_by_name: job.sg_received_by_name || '',
@@ -570,6 +572,32 @@ const JobForm: React.FC<JobFormProps> = ({ job, onClose }) => {
                     placeholder="Enter name"
                   />
                 </div>
+              </div>
+
+              {/* Received by CameraLK Representative Date */}
+              <div className="bg-white p-4 rounded-lg border-2 border-gray-200 hover:border-green-300 transition-all">
+                <label className="block text-sm font-semibold text-gray-700 mb-3">
+                  Received by CameraLK Representative Date
+                </label>
+                <input
+                  type="date"
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+                  value={formData.clk_received_date}
+                  onChange={(e) => handleInputChange('clk_received_date', e.target.value)}
+                </div>
+              </div>
+
+              {/* Received by CameraLK Representative Date */}
+              <div className="bg-white p-4 rounded-lg border-2 border-gray-200 hover:border-green-300 transition-all">
+                <label className="block text-sm font-semibold text-gray-700 mb-3">
+                  Received by CameraLK Representative Date
+                </label>
+                <input
+                  type="date"
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+                  value={formData.clk_received_date}
+                  onChange={(e) => handleInputChange('clk_received_date', e.target.value)}
+                />
               </div>
 
               {/* Received Confirmation by CameraLK Representative Date | Received by Name | Tick */}
