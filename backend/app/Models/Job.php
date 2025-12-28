@@ -52,53 +52,53 @@ class Job extends Model
     /**
      * Get the job's current status based on dates and confirmations.
      * Status flow:
-     * 1. Ongoing Job (default)
-     * 2. Shipped from CameraLK (lk_shipped_date)
-     * 3. Received to Company (company_received_date + received_confirmation)
-     * 4. Supplier Shipped (supplier_shipping_date)
-     * 5. Received to Singapore (warehouse_received_date OR sg checkbox)
-     * 6. Received by CameraLK Representative (received_confirmation_by)
-     * 7. Shipping Arranged from Singapore (shipped_from_singapore_date)
-     * 8. Job Completed (final_received_date + service_confirmation)
+     * 1. Ongoing Job - default, no any date field updated
+     * 2. Shipped from CameraLK - CameraLK Shipped Date (lk_shipped_date)
+     * 3. Received to Company - Company Received Date (company_received_date)
+     * 4. Supplier Shipped - Supplier Shipping Date (supplier_shipping_date)
+     * 5. Received to Singapore - Warehouse Received Date Singapore (warehouse_received_date)
+     * 6. Received by CameraLK Representative - Received Confirmation by CameraLK Representative Date (clk_received_by_name)
+     * 7. Shipping Arranged from Singapore - Shipping Arranged from Singapore Date (shipped_from_singapore_date)
+     * 8. Job Completed - Service CameraLK Received Date (final_received_date)
      */
     public function getStatusAttribute(): string
     {
-        // Job Completed - final received date is set and confirmed
-        if ($this->final_received_date && $this->service_confirmation) {
+        // Job Completed - Service CameraLK Received Date
+        if ($this->final_received_date) {
             return 'Job Completed';
         }
 
-        // Shipping Arranged from Singapore - shipped from Singapore
+        // Shipping Arranged from Singapore - Shipping Arranged from Singapore Date
         if ($this->shipped_from_singapore_date) {
             return 'Shipping Arranged from Singapore';
         }
 
-        // Received by CameraLK Representative - received confirmation by CLK representative
-        if ($this->received_confirmation_by) {
+        // Received by CameraLK Representative - Received Confirmation by CameraLK Representative Date
+        if ($this->clk_received_by_name) {
             return 'Received by CameraLK Representative';
         }
 
-        // Received to Singapore - warehouse received in Singapore or marked as SG
-        if ($this->warehouse_received_date || $this->sg) {
+        // Received to Singapore - Warehouse Received Date (Singapore)
+        if ($this->warehouse_received_date) {
             return 'Received to Singapore';
         }
 
-        // Supplier Shipped - supplier shipping date is set
+        // Supplier Shipped - Supplier Shipping Date
         if ($this->supplier_shipping_date) {
             return 'Supplier Shipped';
         }
 
-        // Received to Company - company received and confirmed
-        if ($this->company_received_date && $this->received_confirmation) {
+        // Received to Company - Company Received Date
+        if ($this->company_received_date) {
             return 'Received to Company';
         }
 
-        // Shipped from CameraLK - CameraLK shipped but not yet received by company
+        // Shipped from CameraLK - CameraLK Shipped Date
         if ($this->lk_shipped_date) {
             return 'Shipped from CameraLK';
         }
 
-        // Ongoing Job - default status when job is created or only basic info exists
+        // Ongoing Job - default, no any date field updated
         return 'Ongoing Job';
     }
 
