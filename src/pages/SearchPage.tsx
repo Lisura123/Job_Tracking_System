@@ -961,7 +961,7 @@ const SearchPage: React.FC = () => {
                         { label: 'Company Received Date', date: selectedJob.company_received_date, remark: selectedJob.received_confirmation_by },
                         { label: 'Supplier Shipping Date', date: selectedJob.supplier_shipping_date, method: selectedJob.supplier_shipping_method },
                         { label: 'Warehouse Received Date (Singapore)', date: selectedJob.warehouse_received_date, person: selectedJob.sg_received_by_name },
-                        { label: 'Received by CameraLK Representative', date: selectedJob.received_confirmation_by, person: selectedJob.clk_received_by_name },
+                        { label: 'Received by CameraLK Representative', date: selectedJob.clk_received_date, person: selectedJob.clk_received_by_name },
                         { label: 'Shipping Arranged from Singapore Date', date: selectedJob.shipped_from_singapore_date },
                         { label: 'Service CameraLK Received Date', date: selectedJob.final_received_date, person: selectedJob.final_received_by_name },
                       ].map((item, index) => (
