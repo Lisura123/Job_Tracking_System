@@ -24,6 +24,7 @@ class Job extends Model
         'company_received_date',
         'supplier_shipping_date',
         'warehouse_received_date',
+        'clk_received_date',
         'received_confirmation_by',
         'sg',
         'sg_received_by_name',
@@ -40,6 +41,7 @@ class Job extends Model
         'company_received_date' => 'date',
         'supplier_shipping_date' => 'date',
         'warehouse_received_date' => 'date',
+        'clk_received_date' => 'date',
         'shipped_from_singapore_date' => 'date',
         'final_received_date' => 'date',
         'received_confirmation' => 'boolean',
@@ -57,7 +59,7 @@ class Job extends Model
      * 3. Received to Company - Company Received Date (company_received_date)
      * 4. Supplier Shipped - Supplier Shipping Date (supplier_shipping_date)
      * 5. Received to Singapore - Warehouse Received Date Singapore (warehouse_received_date)
-     * 6. Received by CameraLK Representative - Received Confirmation by CameraLK Representative Date (clk_received_by_name)
+     * 6. Received by CameraLK Representative - CameraLK Received Date (clk_received_date)
      * 7. Shipping Arranged from Singapore - Shipping Arranged from Singapore Date (shipped_from_singapore_date)
      * 8. Job Completed - Service CameraLK Received Date (final_received_date)
      */
@@ -82,8 +84,8 @@ class Job extends Model
             $statuses[] = ['date' => $this->warehouse_received_date, 'status' => 'Received to Singapore', 'priority' => 5];
         }
 
-        if ($this->clk_received_by_name) {
-            $statuses[] = ['date' => $this->clk_received_by_name, 'status' => 'Received by CameraLK Representative', 'priority' => 6];
+        if ($this->clk_received_date) {
+            $statuses[] = ['date' => $this->clk_received_date, 'status' => 'Received by CameraLK Representative', 'priority' => 6];
         }
 
         if ($this->shipped_from_singapore_date) {
