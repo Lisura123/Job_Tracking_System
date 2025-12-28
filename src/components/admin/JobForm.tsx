@@ -584,19 +584,6 @@ const JobForm: React.FC<JobFormProps> = ({ job, onClose }) => {
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                   value={formData.clk_received_date}
                   onChange={(e) => handleInputChange('clk_received_date', e.target.value)}
-                </div>
-              </div>
-
-              {/* Received by CameraLK Representative Date */}
-              <div className="bg-white p-4 rounded-lg border-2 border-gray-200 hover:border-green-300 transition-all">
-                <label className="block text-sm font-semibold text-gray-700 mb-3">
-                  Received by CameraLK Representative Date
-                </label>
-                <input
-                  type="date"
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                  value={formData.clk_received_date}
-                  onChange={(e) => handleInputChange('clk_received_date', e.target.value)}
                 />
               </div>
 
