@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { jobService, Job } from '../services/jobService';
-import { authService } from '../services/authService';
+import { jobService, Job, AdvancedFilters } from '../services/jobService';
 import { toast } from 'react-toastify';
 import { Search, Loader2, Package, User, Phone, Calendar, CheckCircle, XCircle, ChevronDown, ChevronUp, Filter, X } from 'lucide-react';
 
@@ -11,10 +10,6 @@ const SearchPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [resultType, setResultType] = useState<'recent' | 'search' | 'filter'>('recent');
-  
-  // Get current user role
-  const currentUser = authService.getCurrentUser();
-  const isViewer = currentUser?.role === 'viewer';
   
   // Autocomplete state
   const [suggestions, setSuggestions] = useState<{
@@ -216,14 +211,26 @@ const SearchPage: React.FC = () => {
 
     setLoading(true);
     try {
-      // Build advanced filters object
-      const advancedFilters: any = {
-        tracking_number: trackingNumber,
-        company_name: companyName,
-        original_case_number: originalCaseNumber,
-        clk_case_number: clkCaseNumber,
-        status: statusFilter
-      };
+      // Build advanced filters object with only populated values
+      const advancedFilters: AdvancedFilters = {};
+
+      const trimmedTrackingNumber = trackingNumber.trim();
+      const trimmedCompanyName = companyName.trim();
+      const trimmedOriginalCaseNumber = originalCaseNumber.trim();
+      const trimmedClkCaseNumber = clkCaseNumber.trim();
+
+      if (trimmedTrackingNumber) {
+        advancedFilters.tracking_number = trimmedTrackingNumber;
+      }
+      if (trimmedCompanyName) {
+        advancedFilters.company_name = trimmedCompanyName;
+      }
+      if (trimmedOriginalCaseNumber) {
+        advancedFilters.original_case_number = trimmedOriginalCaseNumber;
+      }
+      if (trimmedClkCaseNumber) {
+        advancedFilters.clk_case_number = trimmedClkCaseNumber;
+      }
 
       // Add date filters as both from and to for exact match
       if (lkShippedDate) {
@@ -251,7 +258,11 @@ const SearchPage: React.FC = () => {
         advancedFilters.final_received_date_to = finalReceivedDate;
       }
 
-      const response = await jobService.getAllJobs(page, undefined, advancedFilters);
+      const response = await jobService.getAllJobs(
+        page,
+        statusFilter || undefined,
+        advancedFilters
+      );
       
       setJobs(response.data);
       setResultType('filter');
@@ -518,8 +529,7 @@ const SearchPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Shipping Information Filters Section - Hidden for Viewer Users */}
-          {!isViewer && (
+          {/* Shipping Information Filters Section */}
           <div>
             <div className="flex items-center justify-between mb-3">
               <button
@@ -712,7 +722,6 @@ const SearchPage: React.FC = () => {
               </div>
             )}
           </div>
-          )}
         </div>
 
         {/* Results Display - Fully Responsive */}

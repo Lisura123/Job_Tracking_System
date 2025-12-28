@@ -143,19 +143,28 @@ export const jobService = {
   },
 
   async getAllJobs(page: number = 1, status?: string, advancedFilters?: AdvancedFilters): Promise<PaginatedResponse<Job>> {
-    // Check user role to determine which endpoint to use
     const user = authService.getCurrentUser();
     const isViewer = user?.role === 'viewer';
-
-    // Viewers use the search/jobs endpoint, others use the jobs endpoint
     const endpoint = isViewer ? '/search/jobs' : '/jobs';
-    
-    const { data } = await api.get<PaginatedResponse<Job>>(endpoint, {
-      params: { 
-        page,
-        ...(isViewer ? { per_page: 15 } : { status, ...(advancedFilters || {}) })
-      },
-    });
+
+    const params: Record<string, any> = {
+      page,
+      ...(isViewer ? { per_page: 15 } : {}),
+    };
+
+    if (status) {
+      params.status = status;
+    }
+
+    if (advancedFilters) {
+      Object.entries(advancedFilters).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          params[key] = value;
+        }
+      });
+    }
+
+    const { data } = await api.get<PaginatedResponse<Job>>(endpoint, { params });
     return data;
   },
 

@@ -18,34 +18,25 @@ class SearchController extends Controller
         ]);
 
         $query = $request->input('query');
-        
-        // Check if user is a viewer - viewers cannot use advanced filters or status filters
-        $user = $request->user();
-        $isViewer = $user && $user->role === 'viewer';
-        
-        $status = !$isViewer ? $request->input('status') : null;
-        
-        // Check if user is a viewer - viewers cannot use advanced filters
-        $user = $request->user();
-        $isViewer = $user && $user->role === 'viewer';
-        
-        // Advanced filter parameters (only for non-viewers)
-        $originalCaseNumber = !$isViewer ? $request->input('original_case_number') : null;
-        $clkCaseNumber = !$isViewer ? $request->input('clk_case_number') : null;
-        $companyName = !$isViewer ? $request->input('company_name') : null;
-        $lkShippedDateFrom = !$isViewer ? $request->input('lk_shipped_date_from') : null;
-        $lkShippedDateTo = !$isViewer ? $request->input('lk_shipped_date_to') : null;
-        $companyReceivedDateFrom = !$isViewer ? $request->input('company_received_date_from') : null;
-        $companyReceivedDateTo = !$isViewer ? $request->input('company_received_date_to') : null;
-        $supplierShippingDateFrom = !$isViewer ? $request->input('supplier_shipping_date_from') : null;
-        $supplierShippingDateTo = !$isViewer ? $request->input('supplier_shipping_date_to') : null;
-        $trackingNumber = !$isViewer ? $request->input('tracking_number') : null;
-        $warehouseReceivedDateFrom = !$isViewer ? $request->input('warehouse_received_date_from') : null;
-        $warehouseReceivedDateTo = !$isViewer ? $request->input('warehouse_received_date_to') : null;
-        $shippedFromSgDateFrom = !$isViewer ? $request->input('shipped_from_sg_date_from') : null;
-        $shippedFromSgDateTo = !$isViewer ? $request->input('shipped_from_sg_date_to') : null;
-        $finalReceivedDateFrom = !$isViewer ? $request->input('final_received_date_from') : null;
-        $finalReceivedDateTo = !$isViewer ? $request->input('final_received_date_to') : null;
+        $status = $request->input('status');
+
+        // Advanced filter parameters (available to all roles)
+        $originalCaseNumber = $request->input('original_case_number');
+        $clkCaseNumber = $request->input('clk_case_number');
+        $companyName = $request->input('company_name');
+        $lkShippedDateFrom = $request->input('lk_shipped_date_from');
+        $lkShippedDateTo = $request->input('lk_shipped_date_to');
+        $companyReceivedDateFrom = $request->input('company_received_date_from');
+        $companyReceivedDateTo = $request->input('company_received_date_to');
+        $supplierShippingDateFrom = $request->input('supplier_shipping_date_from');
+        $supplierShippingDateTo = $request->input('supplier_shipping_date_to');
+        $trackingNumber = $request->input('tracking_number');
+        $warehouseReceivedDateFrom = $request->input('warehouse_received_date_from');
+        $warehouseReceivedDateTo = $request->input('warehouse_received_date_to');
+        $shippedFromSgDateFrom = $request->input('shipped_from_sg_date_from');
+        $shippedFromSgDateTo = $request->input('shipped_from_sg_date_to');
+        $finalReceivedDateFrom = $request->input('final_received_date_from');
+        $finalReceivedDateTo = $request->input('final_received_date_to');
 
         // Search by job number, customer name, customer phone, original case number, or CLK case number
         $jobsQuery = Job::with(['customer', 'items', 'trackingDetails'])
