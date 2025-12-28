@@ -51,6 +51,15 @@ class Job extends Model
 
     /**
      * Get the job's current status based on dates and confirmations.
+     * Status flow:
+     * 1. Ongoing Job (default)
+     * 2. Shipped from CameraLK
+     * 3. Received to Company
+     * 4. Supplier Shipped
+     * 5. Received to Singapore
+     * 6. Received by CameraLK Representative
+     * 7. Shipping Arranged from Singapore
+     * 8. Job Completed
      */
     public function getStatusAttribute(): string
     {
@@ -59,18 +68,28 @@ class Job extends Model
             return 'Job Completed';
         }
 
-        // Shipped from Singapore - shipped from Singapore but not yet received at service
+        // Shipping Arranged from Singapore - shipped from Singapore but not yet received at service
         if ($this->shipped_from_singapore_date && !$this->final_received_date) {
-            return 'Shipped from Singapore';
+            return 'Shipping Arranged from Singapore';
         }
 
-        // Singapore Processing - warehouse received in Singapore or marked as SG
-        if (($this->warehouse_received_date || $this->sg) && !$this->shipped_from_singapore_date) {
-            return 'Singapore Processing';
+        // Received by CameraLK Representative - received confirmation by CLK representative
+        if ($this->received_confirmation_by && !$this->shipped_from_singapore_date) {
+            return 'Received by CameraLK Representative';
         }
 
-        // Received to Company - company received and confirmed, but not yet sent to warehouse/singapore
-        if ($this->company_received_date && $this->received_confirmation && !$this->warehouse_received_date && !$this->sg) {
+        // Received to Singapore - warehouse received in Singapore or marked as SG
+        if (($this->warehouse_received_date || $this->sg) && !$this->received_confirmation_by) {
+            return 'Received to Singapore';
+        }
+
+        // Supplier Shipped - supplier shipping date is set but not yet received in Singapore
+        if ($this->supplier_shipping_date && !$this->warehouse_received_date && !$this->sg) {
+            return 'Supplier Shipped';
+        }
+
+        // Received to Company - company received and confirmed, but supplier hasn't shipped yet
+        if ($this->company_received_date && $this->received_confirmation && !$this->supplier_shipping_date) {
             return 'Received to Company';
         }
 

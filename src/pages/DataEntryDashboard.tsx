@@ -16,10 +16,14 @@ const DataEntryDashboard: React.FC = () => {
     switch (status) {
       case 'Job Completed':
         return 'bg-green-100 text-green-800';
-      case 'Shipped from Singapore':
+      case 'Shipping Arranged from Singapore':
         return 'bg-blue-100 text-blue-800';
-      case 'Singapore Processing':
+      case 'Received by CameraLK Representative':
+        return 'bg-teal-100 text-teal-800';
+      case 'Received to Singapore':
         return 'bg-purple-100 text-purple-800';
+      case 'Supplier Shipped':
+        return 'bg-cyan-100 text-cyan-800';
       case 'Received to Company':
         return 'bg-indigo-100 text-indigo-800';
       case 'Shipped from CameraLK':

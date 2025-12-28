@@ -51,12 +51,16 @@ const SearchPage: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Service Completed':
+      case 'Job Completed':
         return 'bg-green-100 text-green-800 border-green-300';
-      case 'Shipped from Singapore':
+      case 'Shipping Arranged from Singapore':
         return 'bg-blue-100 text-blue-800 border-blue-300';
-      case 'Singapore Processing':
+      case 'Received by CameraLK Representative':
+        return 'bg-teal-100 text-teal-800 border-teal-300';
+      case 'Received to Singapore':
         return 'bg-purple-100 text-purple-800 border-purple-300';
+      case 'Supplier Shipped':
+        return 'bg-cyan-100 text-cyan-800 border-cyan-300';
       case 'Received to Company':
         return 'bg-indigo-100 text-indigo-800 border-indigo-300';
       case 'Shipped from CameraLK':
@@ -664,9 +668,11 @@ const SearchPage: React.FC = () => {
                       <option value="Ongoing Job">1. Ongoing Job</option>
                       <option value="Shipped from CameraLK">2. Shipped from CameraLK</option>
                       <option value="Received to Company">3. Received to Company</option>
-                      <option value="Singapore Processing">4. Singapore Processing</option>
-                      <option value="Shipped from Singapore">5. Shipped from Singapore</option>
-                      <option value="Job Completed">6. Job Completed</option>
+                      <option value="Supplier Shipped">4. Supplier Shipped</option>
+                      <option value="Received to Singapore">5. Received to Singapore</option>
+                      <option value="Received by CameraLK Representative">6. Received by CameraLK Representative</option>
+                      <option value="Shipping Arranged from Singapore">7. Shipping Arranged from Singapore</option>
+                      <option value="Job Completed">8. Job Completed</option>
                     </select>
                   </div>
                 </div>
