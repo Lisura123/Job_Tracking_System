@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { jobService, Job } from '../services/jobService';
+import { authService } from '../services/authService';
 import { toast } from 'react-toastify';
 import { Search, Loader2, Package, User, Phone, Calendar, CheckCircle, XCircle, ChevronDown, ChevronUp, Filter, X } from 'lucide-react';
 
@@ -10,6 +11,10 @@ const SearchPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [resultType, setResultType] = useState<'recent' | 'search' | 'filter'>('recent');
+  
+  // Get current user role
+  const currentUser = authService.getCurrentUser();
+  const isViewer = currentUser?.role === 'viewer';
   
   // Autocomplete state
   const [suggestions, setSuggestions] = useState<{
@@ -513,7 +518,8 @@ const SearchPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Shipping Information Filters Section */}
+          {/* Shipping Information Filters Section - Hidden for Viewer Users */}
+          {!isViewer && (
           <div>
             <div className="flex items-center justify-between mb-3">
               <button
@@ -706,6 +712,7 @@ const SearchPage: React.FC = () => {
               </div>
             )}
           </div>
+          )}
         </div>
 
         {/* Results Display - Fully Responsive */}
