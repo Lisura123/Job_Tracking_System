@@ -780,9 +780,9 @@ const SearchPage: React.FC = () => {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
                             <span className="font-bold text-gray-900 text-base sm:text-lg">{job.job_number}</span>
-                            {job.original_case_number && (
-                              <span className="text-xs px-2.5 py-0.5 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 rounded-full font-semibold border border-gray-300">
-                                {job.original_case_number}
+                            {job.clk_case_number && (
+                              <span className="text-xs px-2.5 py-0.5 bg-gradient-to-r from-indigo-100 to-indigo-200 text-indigo-700 rounded-full font-semibold border border-indigo-300">
+                                {job.clk_case_number}
                               </span>
                             )}
                           </div>
@@ -795,12 +795,6 @@ const SearchPage: React.FC = () => {
                       <span className={`px-3 py-1.5 text-xs font-bold rounded-lg border-2 shadow-sm whitespace-nowrap flex-shrink-0 ${getStatusColor(job.status)}`}>
                         {job.status}
                       </span>
-                    </div>
-                    
-                    {/* Contact Info */}
-                    <div className="flex items-center gap-2 pl-11 sm:pl-12">
-                      <Phone className="h-4 w-4 text-green-600 flex-shrink-0" />
-                      <span className="text-sm text-gray-600 font-medium">{job.customer.contact_number}</span>
                     </div>
                     
                     {/* View Details Link */}
