@@ -339,48 +339,48 @@ const SearchPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 py-4 sm:py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Page Header */}
-        <div className="mb-6">
-          <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">Job Tracking & Search</h1>
-          <p className="text-gray-600 text-sm sm:text-base">Search and track your jobs in real-time</p>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 py-3 sm:py-6 lg:py-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
+        {/* Page Header - Mobile Optimized */}
+        <div className="mb-4 sm:mb-6">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-1 sm:mb-2">Job Tracking & Search</h1>
+          <p className="text-gray-600 text-xs sm:text-sm lg:text-base">Search and track your jobs in real-time</p>
         </div>
 
-        {/* Search Header - Responsive */}
-        <div className="bg-white rounded-2xl shadow-xl border border-blue-100 p-4 sm:p-6 mb-4 sm:mb-6 hover:shadow-2xl transition-shadow duration-300">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 rounded-xl shadow-lg">
-                <Search className="h-6 w-6 text-white" />
+        {/* Search Header - Fully Responsive */}
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl border border-blue-100 p-3 sm:p-4 lg:p-6 mb-3 sm:mb-4 lg:mb-6 hover:shadow-2xl transition-shadow duration-300">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="p-2 sm:p-2.5 lg:p-3 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 rounded-lg sm:rounded-xl shadow-md sm:shadow-lg">
+                <Search className="h-5 w-5 sm:h-5 sm:w-5 lg:h-6 lg:w-6 text-white" />
               </div>
-              <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Job Tracking & Search</h1>
+              <h1 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Job Tracking & Search</h1>
             </div>
             <button
               onClick={handleResetPage}
               disabled={loading}
-              className="px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-100 border-2 border-gray-200 rounded-lg hover:bg-gray-200 hover:border-gray-300 transition-all shadow-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="min-h-[40px] sm:min-h-[44px] px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold text-gray-700 bg-gray-100 border-2 border-gray-200 rounded-lg hover:bg-gray-200 hover:border-gray-300 transition-all shadow-sm flex items-center gap-1.5 sm:gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <X className="h-4 w-4" />
+              <X className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               <span className="hidden sm:inline">Reset Page</span>
               <span className="sm:hidden">Reset</span>
             </button>
           </div>
           
-          {/* Search Section */}
-          <div className="mb-4 pb-4 border-b border-gray-200">
-            <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-              <span className="text-blue-600">🔍</span>
+          {/* Search Section - Mobile First */}
+          <div className="mb-3 sm:mb-4 pb-3 sm:pb-4 border-b border-gray-200">
+            <h3 className="text-xs sm:text-sm font-semibold text-gray-700 mb-2 sm:mb-3 flex items-center gap-1.5 sm:gap-2">
+              <span className="text-blue-600 text-sm sm:text-base">🔍</span>
               Search Jobs
             </h3>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <div className="flex-1 relative group" ref={suggestionRef}>
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Search className="h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+            <div className="flex flex-col gap-2 sm:gap-3">
+              <div className="w-full relative group" ref={suggestionRef}>
+                <div className="absolute inset-y-0 left-0 pl-2.5 sm:pl-3 flex items-center pointer-events-none">
+                  <Search className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
                 </div>
                 <input
                   type="text"
-                  className="block w-full pl-10 pr-3 py-3 sm:py-3 border-2 border-gray-200 rounded-lg leading-5 bg-white placeholder-gray-400 focus:outline-none focus:placeholder-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-sm transition-all hover:border-blue-300 shadow-sm"
+                  className="block w-full pl-9 sm:pl-10 pr-3 py-2.5 sm:py-3 border-2 border-gray-200 rounded-lg leading-5 bg-white placeholder-gray-400 focus:outline-none focus:placeholder-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition-all hover:border-blue-300 shadow-sm"
                   placeholder="Search by Job Number, Customer Name, or Phone Number..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
@@ -496,7 +496,7 @@ const SearchPage: React.FC = () => {
               <button
                 onClick={() => handleSearch()}
                 disabled={loading || !query.trim()}
-                className="min-h-[44px] px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 font-medium shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 disabled:transform-none"
+                className="w-full sm:w-auto min-h-[44px] px-5 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 font-medium text-sm sm:text-base shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 disabled:transform-none"
               >
                 {loading ? (
                   <>
@@ -708,15 +708,14 @@ const SearchPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Results Display - Card View on Mobile, List on Desktop */}
+        {/* Results Display - Fully Responsive */}
         {jobs.length > 0 && (
-          <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-4 sm:p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg">
-                  <Package className="h-5 w-5 text-white" />
+          <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl border border-gray-100 p-3 sm:p-4 lg:p-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-3 sm:mb-4">\n              <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                <div className="p-1.5 sm:p-2 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg shadow-md flex-shrink-0">
+                  <Package className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                 </div>
-                <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                <h2 className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent truncate">
                   <span className="hidden sm:inline">
                     {resultType === 'recent' && 'Recent Jobs'}
                     {resultType === 'search' && 'Search Results'}
@@ -728,7 +727,7 @@ const SearchPage: React.FC = () => {
                     {resultType === 'filter' && 'Filtered'}
                   </span>
                 </h2>
-                <span className="px-3 py-1 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 rounded-full text-sm font-semibold">
+                <span className="px-2 sm:px-3 py-0.5 sm:py-1 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 rounded-full text-xs sm:text-sm font-semibold flex-shrink-0">
                   {pagination.total}
                 </span>
               </div>
@@ -736,15 +735,15 @@ const SearchPage: React.FC = () => {
                 <button
                   onClick={handleResetPage}
                   disabled={loading}
-                  className="px-4 py-2 text-sm font-semibold text-red-600 border-2 border-red-200 rounded-lg hover:bg-red-50 hover:border-red-300 transition-all shadow-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="min-h-[40px] sm:min-h-[44px] px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold text-red-600 border-2 border-red-200 rounded-lg hover:bg-red-50 hover:border-red-300 transition-all shadow-sm flex items-center gap-1.5 sm:gap-2 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
                 >
-                  <X className="h-4 w-4" />
+                  <X className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   <span className="hidden sm:inline">Clear</span>
                 </button>
               )}
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               {jobs.map((job) => (
                 <div
                   key={job.id}
@@ -796,23 +795,23 @@ const SearchPage: React.FC = () => {
               ))}
             </div>
 
-            {/* Pagination - Touch-friendly */}
+            {/* Pagination - Touch-friendly & Fully Responsive */}
             {pagination.lastPage > 1 && (
-              <div className="mt-6 flex flex-col sm:flex-row justify-center items-center gap-3">
+              <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row justify-center items-stretch sm:items-center gap-2 sm:gap-3">
                 <button
                   onClick={() => handlePageChange(pagination.currentPage - 1)}
                   disabled={pagination.currentPage === 1}
-                  className="min-h-[44px] w-full sm:w-auto px-6 py-2.5 border-2 border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm hover:shadow"
+                  className="min-h-[44px] w-full sm:w-auto px-4 sm:px-6 py-2.5 border-2 border-gray-200 rounded-lg text-xs sm:text-sm font-semibold text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm hover:shadow"
                 >
                   ← Previous
                 </button>
-                <span className="px-5 py-2.5 text-sm font-bold bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 rounded-lg border-2 border-blue-200">
+                <span className="min-h-[44px] px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 rounded-lg border-2 border-blue-200 flex items-center justify-center">
                   Page {pagination.currentPage} of {pagination.lastPage}
                 </span>
                 <button
                   onClick={() => handlePageChange(pagination.currentPage + 1)}
                   disabled={pagination.currentPage === pagination.lastPage}
-                  className="min-h-[44px] w-full sm:w-auto px-6 py-2.5 border-2 border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm hover:shadow"
+                  className="min-h-[44px] w-full sm:w-auto px-4 sm:px-6 py-2.5 border-2 border-gray-200 rounded-lg text-xs sm:text-sm font-semibold text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm hover:shadow"
                 >
                   Next →
                 </button>
