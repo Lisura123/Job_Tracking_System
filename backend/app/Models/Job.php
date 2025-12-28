@@ -50,8 +50,8 @@ class Job extends Model
     protected $appends = ['status'];
 
     /**
-     * Get the job's current status based on dates and confirmations.
-     * Status flow:
+     * Get the job's current status based on the most recently updated date.
+     * Status flow (priority order based on workflow):
      * 1. Ongoing Job - default, no any date field updated
      * 2. Shipped from CameraLK - CameraLK Shipped Date (lk_shipped_date)
      * 3. Received to Company - Company Received Date (company_received_date)
@@ -63,43 +63,48 @@ class Job extends Model
      */
     public function getStatusAttribute(): string
     {
-        // Job Completed - Service CameraLK Received Date
-        if ($this->final_received_date) {
-            return 'Job Completed';
-        }
+        // Collect all dates with their corresponding statuses and priority
+        $statuses = [];
 
-        // Shipping Arranged from Singapore - Shipping Arranged from Singapore Date
-        if ($this->shipped_from_singapore_date) {
-            return 'Shipping Arranged from Singapore';
-        }
-
-        // Received by CameraLK Representative - Received Confirmation by CameraLK Representative Date
-        if ($this->clk_received_by_name) {
-            return 'Received by CameraLK Representative';
-        }
-
-        // Received to Singapore - Warehouse Received Date (Singapore)
-        if ($this->warehouse_received_date) {
-            return 'Received to Singapore';
-        }
-
-        // Supplier Shipped - Supplier Shipping Date
-        if ($this->supplier_shipping_date) {
-            return 'Supplier Shipped';
-        }
-
-        // Received to Company - Company Received Date
-        if ($this->company_received_date) {
-            return 'Received to Company';
-        }
-
-        // Shipped from CameraLK - CameraLK Shipped Date
         if ($this->lk_shipped_date) {
-            return 'Shipped from CameraLK';
+            $statuses[] = ['date' => $this->lk_shipped_date, 'status' => 'Shipped from CameraLK', 'priority' => 2];
         }
 
-        // Ongoing Job - default, no any date field updated
-        return 'Ongoing Job';
+        if ($this->company_received_date) {
+            $statuses[] = ['date' => $this->company_received_date, 'status' => 'Received to Company', 'priority' => 3];
+        }
+
+        if ($this->supplier_shipping_date) {
+            $statuses[] = ['date' => $this->supplier_shipping_date, 'status' => 'Supplier Shipped', 'priority' => 4];
+        }
+
+        if ($this->warehouse_received_date) {
+            $statuses[] = ['date' => $this->warehouse_received_date, 'status' => 'Received to Singapore', 'priority' => 5];
+        }
+
+        if ($this->clk_received_by_name) {
+            $statuses[] = ['date' => $this->clk_received_by_name, 'status' => 'Received by CameraLK Representative', 'priority' => 6];
+        }
+
+        if ($this->shipped_from_singapore_date) {
+            $statuses[] = ['date' => $this->shipped_from_singapore_date, 'status' => 'Shipping Arranged from Singapore', 'priority' => 7];
+        }
+
+        if ($this->final_received_date) {
+            $statuses[] = ['date' => $this->final_received_date, 'status' => 'Job Completed', 'priority' => 8];
+        }
+
+        // If no dates are set, return default status
+        if (empty($statuses)) {
+            return 'Ongoing Job';
+        }
+
+        // Find the status with the highest priority (most advanced in workflow)
+        usort($statuses, function($a, $b) {
+            return $b['priority'] - $a['priority'];
+        });
+
+        return $statuses[0]['status'];
     }
 
     /**
