@@ -711,7 +711,8 @@ const SearchPage: React.FC = () => {
         {/* Results Display - Fully Responsive */}
         {jobs.length > 0 && (
           <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl border border-gray-100 p-3 sm:p-4 lg:p-6">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-3 sm:mb-4">\n              <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-3 sm:mb-4">
+              <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
                 <div className="p-1.5 sm:p-2 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg shadow-md flex-shrink-0">
                   <Package className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                 </div>
