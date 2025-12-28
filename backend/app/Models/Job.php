@@ -53,13 +53,13 @@ class Job extends Model
      * Get the job's current status based on dates and confirmations.
      * Status flow:
      * 1. Ongoing Job (default)
-     * 2. Shipped from CameraLK
-     * 3. Received to Company
-     * 4. Supplier Shipped
-     * 5. Received to Singapore
-     * 6. Received by CameraLK Representative
-     * 7. Shipping Arranged from Singapore
-     * 8. Job Completed
+     * 2. Shipped from CameraLK (lk_shipped_date)
+     * 3. Received to Company (company_received_date + received_confirmation)
+     * 4. Supplier Shipped (supplier_shipping_date)
+     * 5. Received to Singapore (warehouse_received_date OR sg checkbox)
+     * 6. Received by CameraLK Representative (received_confirmation_by)
+     * 7. Shipping Arranged from Singapore (shipped_from_singapore_date)
+     * 8. Job Completed (final_received_date + service_confirmation)
      */
     public function getStatusAttribute(): string
     {
@@ -68,33 +68,33 @@ class Job extends Model
             return 'Job Completed';
         }
 
-        // Shipping Arranged from Singapore - shipped from Singapore but not yet received at service
-        if ($this->shipped_from_singapore_date && !$this->final_received_date) {
+        // Shipping Arranged from Singapore - shipped from Singapore
+        if ($this->shipped_from_singapore_date) {
             return 'Shipping Arranged from Singapore';
         }
 
         // Received by CameraLK Representative - received confirmation by CLK representative
-        if ($this->received_confirmation_by && !$this->shipped_from_singapore_date) {
+        if ($this->received_confirmation_by) {
             return 'Received by CameraLK Representative';
         }
 
         // Received to Singapore - warehouse received in Singapore or marked as SG
-        if (($this->warehouse_received_date || $this->sg) && !$this->received_confirmation_by) {
+        if ($this->warehouse_received_date || $this->sg) {
             return 'Received to Singapore';
         }
 
-        // Supplier Shipped - supplier shipping date is set but not yet received in Singapore
-        if ($this->supplier_shipping_date && !$this->warehouse_received_date && !$this->sg) {
+        // Supplier Shipped - supplier shipping date is set
+        if ($this->supplier_shipping_date) {
             return 'Supplier Shipped';
         }
 
-        // Received to Company - company received and confirmed, but supplier hasn't shipped yet
-        if ($this->company_received_date && $this->received_confirmation && !$this->supplier_shipping_date) {
+        // Received to Company - company received and confirmed
+        if ($this->company_received_date && $this->received_confirmation) {
             return 'Received to Company';
         }
 
         // Shipped from CameraLK - CameraLK shipped but not yet received by company
-        if ($this->lk_shipped_date && !$this->company_received_date) {
+        if ($this->lk_shipped_date) {
             return 'Shipped from CameraLK';
         }
 
