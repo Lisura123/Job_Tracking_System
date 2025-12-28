@@ -792,8 +792,6 @@ const SearchPage: React.FC = () => {
                       </span>
                     </div>
                   </div>
-                    </div>
-                  </div>
                 </div>
               ))}
             </div>
