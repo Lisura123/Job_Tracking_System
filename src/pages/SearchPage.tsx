@@ -758,12 +758,12 @@ const SearchPage: React.FC = () => {
                     </div>
                     
                     {/* Original Case Number */}
-                    {job.original_case_number && (
-                      <div className="flex items-center gap-2 min-w-[100px]">
-                        <span className="text-xs text-gray-500">Case:</span>
-                        <span className="text-sm font-semibold text-gray-700">{job.original_case_number}</span>
-                      </div>
-                    )}
+                    <div className="flex items-center gap-2 min-w-[100px]">
+                      <span className="text-xs text-gray-500">Case:</span>
+                      <span className="text-sm font-semibold text-gray-700">
+                        {job.original_case_number || <span className="text-gray-400 italic">N/A</span>}
+                      </span>
+                    </div>
                     
                     {/* Contact Number */}
                     <div className="flex items-center gap-2 min-w-[140px]">
