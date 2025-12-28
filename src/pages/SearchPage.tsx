@@ -748,43 +748,51 @@ const SearchPage: React.FC = () => {
               {jobs.map((job) => (
                 <div
                   key={job.id}
-                  className="border-2 border-gray-100 rounded-lg p-4 hover:border-blue-200 hover:bg-blue-50 transition-all"
+                  className="bg-white border-2 border-gray-200 rounded-xl p-4 sm:p-5 hover:border-blue-400 hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                  onClick={() => handleViewDetails(job)}
                 >
-                  <div className="flex items-center justify-between gap-4 flex-wrap">
-                    {/* Job Number */}
-                    <div className="flex items-center gap-2 min-w-[120px]">
-                      <Package className="h-5 w-5 text-blue-600 flex-shrink-0" />
-                      <span className="font-bold text-gray-900">{job.job_number}</span>
-                    </div>
-                    
-                    {/* Original Case Number */}
-                    <div className="flex items-center gap-2 min-w-[100px]">
-                      <span className="text-xs text-gray-500">Case:</span>
-                      <span className="text-sm font-semibold text-gray-700">
-                        {job.original_case_number || <span className="text-gray-400 italic">N/A</span>}
-                      </span>
-                    </div>
-                    
-                    {/* Contact Number */}
-                    <div className="flex items-center gap-2 min-w-[140px]">
-                      <Phone className="h-5 w-5 text-green-600 flex-shrink-0" />
-                      <span className="text-gray-700">{job.customer.contact_number}</span>
-                    </div>
-                    
-                    {/* Current Status */}
-                    <div className="flex-grow">
-                      <span className={`px-3 py-1.5 text-xs font-bold rounded-lg border-2 shadow-sm ${getStatusColor(job.status)}`}>
+                  <div className="flex flex-col gap-3">
+                    {/* Header Row - Job Number & Status */}
+                    <div className="flex items-start sm:items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        <div className="p-2.5 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl shadow-md flex-shrink-0">
+                          <Package className="h-5 w-5 text-white" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-bold text-gray-900 text-base sm:text-lg">{job.job_number}</span>
+                            {job.original_case_number && (
+                              <span className="text-xs px-2.5 py-0.5 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 rounded-full font-semibold border border-gray-300">
+                                {job.original_case_number}
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2 mt-1.5">
+                            <User className="h-3.5 w-3.5 text-gray-400 flex-shrink-0" />
+                            <span className="text-sm text-gray-700 font-medium truncate">{job.customer.name}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <span className={`px-3 py-1.5 text-xs font-bold rounded-lg border-2 shadow-sm whitespace-nowrap flex-shrink-0 ${getStatusColor(job.status)}`}>
                         {job.status}
                       </span>
                     </div>
                     
-                    {/* View Details Button */}
-                    <button 
-                      onClick={() => handleViewDetails(job)}
-                      className="px-5 py-2 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-lg transition-all shadow-md hover:shadow-lg"
-                    >
-                      View Details
-                    </button>
+                    {/* Contact Info */}
+                    <div className="flex items-center gap-2 pl-11 sm:pl-12">
+                      <Phone className="h-4 w-4 text-green-600 flex-shrink-0" />
+                      <span className="text-sm text-gray-600 font-medium">{job.customer.contact_number}</span>
+                    </div>
+                    
+                    {/* View Details Link */}
+                    <div className="flex items-center justify-end pt-2 border-t border-gray-100 mt-1">
+                      <span className="text-sm font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1.5 transition-all group-hover:gap-2">
+                        View Full Details
+                        <ChevronDown className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
+                      </span>
+                    </div>
+                  </div>
+                    </div>
                   </div>
                 </div>
               ))}
