@@ -258,10 +258,13 @@ const SearchPage: React.FC = () => {
         advancedFilters.final_received_date_to = finalReceivedDate;
       }
 
+      // Only pass advancedFilters if there are actual filter values (not just status)
+      const hasAdvancedFilters = Object.keys(advancedFilters).length > 0;
+      
       const response = await jobService.getAllJobs(
         page,
         statusFilter || undefined,
-        advancedFilters
+        hasAdvancedFilters ? advancedFilters : undefined
       );
       
       setJobs(response.data);
