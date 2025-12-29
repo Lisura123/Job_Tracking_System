@@ -271,10 +271,161 @@ class SearchController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 15);
+        $status = $request->input('status');
         
-        $jobs = Job::with(['customer', 'items', 'trackingDetails'])
-            ->latest()
-            ->paginate($perPage);
+        // Advanced filter parameters
+        $originalCaseNumber = $request->input('original_case_number');
+        $clkCaseNumber = $request->input('clk_case_number');
+        $companyName = $request->input('company_name');
+        $lkShippedDateFrom = $request->input('lk_shipped_date_from');
+        $lkShippedDateTo = $request->input('lk_shipped_date_to');
+        $companyReceivedDateFrom = $request->input('company_received_date_from');
+        $companyReceivedDateTo = $request->input('company_received_date_to');
+        $supplierShippingDateFrom = $request->input('supplier_shipping_date_from');
+        $supplierShippingDateTo = $request->input('supplier_shipping_date_to');
+        $trackingNumber = $request->input('tracking_number');
+        $warehouseReceivedDateFrom = $request->input('warehouse_received_date_from');
+        $warehouseReceivedDateTo = $request->input('warehouse_received_date_to');
+        $shippedFromSgDateFrom = $request->input('shipped_from_sg_date_from');
+        $shippedFromSgDateTo = $request->input('shipped_from_sg_date_to');
+        $finalReceivedDateFrom = $request->input('final_received_date_from');
+        $finalReceivedDateTo = $request->input('final_received_date_to');
+        
+        $query = Job::with(['customer', 'items', 'trackingDetails'])
+            ->latest();
+        
+        // Apply advanced filters
+        if ($originalCaseNumber && $originalCaseNumber !== '') {
+            $query->where('original_case_number', 'LIKE', "%{$originalCaseNumber}%");
+        }
+
+        if ($clkCaseNumber && $clkCaseNumber !== '') {
+            $query->where('clk_case_number', 'LIKE', "%{$clkCaseNumber}%");
+        }
+
+        if ($companyName && $companyName !== '') {
+            $query->where('company_name', 'LIKE', "%{$companyName}%");
+        }
+
+        if ($lkShippedDateFrom && $lkShippedDateFrom !== '') {
+            $query->where('lk_shipped_date', '>=', $lkShippedDateFrom);
+        }
+
+        if ($lkShippedDateTo && $lkShippedDateTo !== '') {
+            $query->where('lk_shipped_date', '<=', $lkShippedDateTo);
+        }
+
+        if ($companyReceivedDateFrom && $companyReceivedDateFrom !== '') {
+            $query->where('company_received_date', '>=', $companyReceivedDateFrom);
+        }
+
+        if ($companyReceivedDateTo && $companyReceivedDateTo !== '') {
+            $query->where('company_received_date', '<=', $companyReceivedDateTo);
+        }
+
+        if ($supplierShippingDateFrom && $supplierShippingDateFrom !== '') {
+            $query->where('supplier_shipping_date', '>=', $supplierShippingDateFrom);
+        }
+
+        if ($supplierShippingDateTo && $supplierShippingDateTo !== '') {
+            $query->where('supplier_shipping_date', '<=', $supplierShippingDateTo);
+        }
+
+        if ($trackingNumber && $trackingNumber !== '') {
+            $query->whereHas('trackingDetails', function($q) use ($trackingNumber) {
+                $q->where('tracking_number', 'LIKE', "%{$trackingNumber}%");
+            });
+        }
+
+        if ($warehouseReceivedDateFrom && $warehouseReceivedDateFrom !== '') {
+            $query->where('warehouse_received_date', '>=', $warehouseReceivedDateFrom);
+        }
+
+        if ($warehouseReceivedDateTo && $warehouseReceivedDateTo !== '') {
+            $query->where('warehouse_received_date', '<=', $warehouseReceivedDateTo);
+        }
+
+        if ($shippedFromSgDateFrom && $shippedFromSgDateFrom !== '') {
+            $query->where('shipped_from_singapore_date', '>=', $shippedFromSgDateFrom);
+        }
+
+        if ($shippedFromSgDateTo && $shippedFromSgDateTo !== '') {
+            $query->where('shipped_from_singapore_date', '<=', $shippedFromSgDateTo);
+        }
+
+        if ($finalReceivedDateFrom && $finalReceivedDateFrom !== '') {
+            $query->where('final_received_date', '>=', $finalReceivedDateFrom);
+        }
+
+        if ($finalReceivedDateTo && $finalReceivedDateTo !== '') {
+            $query->where('final_received_date', '<=', $finalReceivedDateTo);
+        }
+
+        // Filter by status if provided
+        if ($status && $status !== '') {
+            switch ($status) {
+                case 'Job Completed':
+                    $query->whereNotNull('final_received_date');
+                    break;
+                    
+                case 'Shipping Arranged from Singapore':
+                    $query->whereNotNull('shipped_from_singapore_date')
+                          ->whereNull('final_received_date');
+                    break;
+                    
+                case 'Received by CameraLK Representative':
+                    $query->whereNotNull('clk_received_date')
+                          ->whereNull('shipped_from_singapore_date')
+                          ->whereNull('final_received_date');
+                    break;
+                    
+                case 'Received to Singapore':
+                    $query->whereNotNull('warehouse_received_date')
+                          ->whereNull('clk_received_date')
+                          ->whereNull('shipped_from_singapore_date')
+                          ->whereNull('final_received_date');
+                    break;
+                    
+                case 'Supplier Shipped':
+                    $query->whereNotNull('supplier_shipping_date')
+                          ->whereNull('warehouse_received_date')
+                          ->whereNull('clk_received_date')
+                          ->whereNull('shipped_from_singapore_date')
+                          ->whereNull('final_received_date');
+                    break;
+                    
+                case 'Received to Company':
+                    $query->whereNotNull('company_received_date')
+                          ->whereNull('supplier_shipping_date')
+                          ->whereNull('warehouse_received_date')
+                          ->whereNull('clk_received_date')
+                          ->whereNull('shipped_from_singapore_date')
+                          ->whereNull('final_received_date');
+                    break;
+                    
+                case 'Shipped from CameraLK':
+                    $query->whereNotNull('lk_shipped_date')
+                          ->whereNull('company_received_date')
+                          ->whereNull('supplier_shipping_date')
+                          ->whereNull('warehouse_received_date')
+                          ->whereNull('clk_received_date')
+                          ->whereNull('shipped_from_singapore_date')
+                          ->whereNull('final_received_date');
+                    break;
+                    
+                case 'Ongoing Job':
+                    $query->whereNull('lk_shipped_date')
+                          ->whereNull('company_received_date')
+                          ->whereNull('supplier_shipping_date')
+                          ->whereNull('warehouse_received_date')
+                          ->whereNull('clk_received_date')
+                          ->whereNull('shipped_from_singapore_date')
+                          ->whereNull('final_received_date');
+                    break;
+            }
+        }
+
+        $jobs = $query->paginate($perPage);
 
         return response()->json($jobs);
     }
