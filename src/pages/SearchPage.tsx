@@ -387,23 +387,34 @@ const SearchPage: React.FC = () => {
           
           {/* Search Section - Enhanced UI */}
           <div className="mb-4 sm:mb-5 pb-4 sm:pb-5 border-b-2 border-gradient-to-r from-blue-100 to-indigo-100">
-            <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-              <div className="p-2 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg shadow-md">
-                <Search className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+            <div className="flex items-start gap-3 sm:gap-4 mb-4 sm:mb-5">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-xl blur-md opacity-40 animate-pulse"></div>
+                <div className="relative p-2.5 sm:p-3 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 rounded-xl shadow-lg">
+                  <Search className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+                </div>
               </div>
-              <div>
-                <h3 className="text-sm sm:text-base font-bold text-gray-900">Search Jobs</h3>
-                <p className="text-xs text-gray-500 hidden sm:block">Find jobs by number, customer, or contact</p>
+              <div className="flex-1">
+                <h3 className="text-base sm:text-lg lg:text-xl font-extrabold bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 bg-clip-text text-transparent mb-1">
+                  Search Jobs
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-600 flex items-center gap-1.5">
+                  <span className="hidden sm:inline">🔍</span>
+                  Find jobs by number, customer, or contact
+                </p>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               <div className="flex-1 relative group" ref={suggestionRef}>
                 <div className="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none z-10">
-                  <Search className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 group-focus-within:text-blue-600 transition-colors" />
+                  <div className="relative">
+                    <Search className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 group-focus-within:text-blue-600 transition-all duration-300 group-focus-within:scale-110" />
+                    <div className="absolute inset-0 bg-blue-400 blur-sm opacity-0 group-focus-within:opacity-50 transition-opacity duration-300"></div>
+                  </div>
                 </div>
                 <input
                   type="text"
-                  className="block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-3 sm:py-3.5 border-2 border-gray-200 rounded-xl leading-5 bg-gradient-to-r from-white to-gray-50 placeholder-gray-400 focus:outline-none focus:placeholder-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white text-sm sm:text-base transition-all hover:border-blue-300 hover:shadow-md shadow-sm font-medium"
+                  className="block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-3.5 sm:py-4 border-2 border-gray-200 rounded-xl sm:rounded-2xl leading-5 bg-gradient-to-r from-white via-blue-50/30 to-indigo-50/30 placeholder-gray-400 focus:outline-none focus:placeholder-gray-300 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white text-sm sm:text-base transition-all duration-300 hover:border-blue-300 hover:shadow-lg shadow-md font-medium hover:bg-white"
                   placeholder="Search by Job Number, Customer Name, or Phone Number..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
@@ -529,19 +540,24 @@ const SearchPage: React.FC = () => {
               <button
                 onClick={() => handleSearch()}
                 disabled={loading || !query.trim()}
-                className="w-full sm:w-auto min-h-[48px] sm:min-h-[52px] px-6 sm:px-8 py-3 sm:py-3.5 bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 text-white rounded-xl hover:from-blue-700 hover:via-blue-800 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2.5 font-bold text-sm sm:text-base shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 active:scale-95 disabled:transform-none relative overflow-hidden group"
+                className="relative w-full sm:w-auto min-h-[48px] sm:min-h-[56px] px-6 sm:px-10 py-3 sm:py-4 bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 text-white rounded-xl sm:rounded-2xl hover:from-blue-700 hover:via-blue-800 hover:to-indigo-800 focus:outline-none focus:ring-4 focus:ring-blue-500/30 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2.5 font-bold text-sm sm:text-base shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 active:scale-95 disabled:transform-none overflow-hidden group"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                {/* Animated gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                
+                {/* Pulse effect on hover */}
+                <div className="absolute inset-0 bg-blue-400 opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
+                
                 {loading ? (
                   <>
-                    <Loader2 className="h-5 w-5 animate-spin relative z-10" />
-                    <span className="hidden sm:inline relative z-10">Searching...</span>
+                    <Loader2 className="h-5 w-5 sm:h-6 sm:w-6 animate-spin relative z-10" />
+                    <span className="hidden sm:inline relative z-10 tracking-wide">Searching...</span>
                     <span className="sm:hidden relative z-10">Search</span>
                   </>
                 ) : (
                   <>
-                    <Search className="h-5 w-5 relative z-10" />
-                    <span className="relative z-10">Search</span>
+                    <Search className="h-5 w-5 sm:h-6 sm:w-6 relative z-10 group-hover:rotate-12 transition-transform duration-300" />
+                    <span className="relative z-10 tracking-wide">Search</span>
                   </>
                 )}
               </button>
