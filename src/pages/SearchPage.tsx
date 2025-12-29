@@ -385,6 +385,13 @@ const SearchPage: React.FC = () => {
             </button>
           </div>
           
+          {/* Section Title */}
+          <div className="mb-4 sm:mb-5">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 bg-clip-text text-transparent">
+              Search & Track Jobs
+            </h2>
+          </div>
+          
           {/* Search Section - Enhanced UI */}
           <div className="mb-4 sm:mb-5 pb-4 sm:pb-5 border-b-2 border-gradient-to-r from-blue-100 to-indigo-100">
             <div className="flex items-start gap-3 sm:gap-4 mb-4 sm:mb-5">
