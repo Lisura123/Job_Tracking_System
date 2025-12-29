@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { jobService, Job, AdvancedFilters } from '../services/jobService';
 import { toast } from 'react-toastify';
-import { Search, Loader2, Package, User, Phone, Calendar, CheckCircle, XCircle, ChevronDown, ChevronUp, Filter, X } from 'lucide-react';
+import { Search, Loader2, Package, User, Phone, Calendar, CheckCircle, ChevronDown, ChevronUp, Filter, X } from 'lucide-react';
 
 const SearchPage: React.FC = () => {
   const [query, setQuery] = useState('');
@@ -862,11 +862,11 @@ const SearchPage: React.FC = () => {
 
               <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
                 {/* Current Status - Prominent Display */}
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-lg p-4">
-                  <div className="flex items-center justify-between">
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-xl border-2 border-blue-200 shadow-md">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                     <div>
-                      <p className="text-xs sm:text-sm text-gray-600 mb-1 font-medium">Current Status</p>
-                      <span className={`inline-flex px-4 py-2 text-sm sm:text-base font-bold rounded-full border-2 ${getStatusColor(selectedJob.status)}`}>
+                      <p className="text-xs sm:text-sm text-gray-600 mb-1 sm:mb-2 font-medium">Current Status</p>
+                      <span className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-bold rounded-lg border-2 shadow-sm inline-block ${getStatusColor(selectedJob.status)}`}>
                         {selectedJob.status}
                       </span>
                     </div>
@@ -874,102 +874,88 @@ const SearchPage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Customer Information - Collapsible on Mobile */}
-                <div className="border-2 border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                  <button
-                    onClick={() => toggleSection('customer')}
-                    className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 transition-all"
-                  >
-                    <h3 className="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
-                      <User className="h-5 w-5 text-blue-600" />
-                      Customer Information
-                    </h3>
-                    {expandedSections.customer ? (
-                      <ChevronUp className="h-5 w-5 text-gray-500" />
-                    ) : (
-                      <ChevronDown className="h-5 w-5 text-gray-500" />
-                    )}
-                  </button>
-                  {expandedSections.customer && (
-                    <div className="p-4 space-y-3 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-4">
+                {/* Job Information */}
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-lg border border-blue-200">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <span className="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">1</span>
+                    Job Information
+                  </h3>
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-xs sm:text-sm font-semibold text-gray-700 mb-1">Job Number</p>
+                      <p className="font-medium text-sm sm:text-base bg-white px-3 py-2 rounded-lg">{selectedJob.job_number}</p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <p className="text-xs sm:text-sm text-gray-600 mb-1">Contact Number</p>
-                        <p className="font-medium text-sm sm:text-base">{selectedJob.customer.contact_number}</p>
+                        <p className="text-xs sm:text-sm font-semibold text-gray-700 mb-1">Contact Number</p>
+                        <p className="font-medium text-sm sm:text-base bg-white px-3 py-2 rounded-lg">{selectedJob.customer.contact_number}</p>
                       </div>
                       <div>
-                        <p className="text-xs sm:text-sm text-gray-600 mb-1">Customer Name</p>
-                        <p className="font-medium text-sm sm:text-base">{selectedJob.customer.name}</p>
+                        <p className="text-xs sm:text-sm font-semibold text-gray-700 mb-1">Customer Name</p>
+                        <p className="font-medium text-sm sm:text-base bg-white px-3 py-2 rounded-lg">{selectedJob.customer.name}</p>
                       </div>
                     </div>
-                  )}
-                </div>
-
-                {/* Job Information - Collapsible */}
-                <div className="border border-gray-200 rounded-lg overflow-hidden">
-                  <button
-                    onClick={() => toggleSection('job')}
-                    className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition"
-                  >
-                    <h3 className="text-base sm:text-lg font-semibold text-gray-900">Job Information</h3>
-                    {expandedSections.job ? (
-                      <ChevronUp className="h-5 w-5 text-gray-500" />
-                    ) : (
-                      <ChevronDown className="h-5 w-5 text-gray-500" />
-                    )}
-                  </button>
-                  {expandedSections.job && (
-                    <div className="p-4 space-y-3">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                          <p className="text-xs sm:text-sm text-gray-600 mb-1">Original Case Number</p>
-                          <p className="font-medium text-sm sm:text-base">{selectedJob.original_case_number || 'N/A'}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs sm:text-sm text-gray-600 mb-1">CLK Case Number</p>
-                          <p className="font-medium text-sm sm:text-base">{selectedJob.clk_case_number || 'N/A'}</p>
-                        </div>
-                      </div>
-                      <div>
-                        <p className="text-xs sm:text-sm text-gray-600 mb-1">Company Name</p>
-                        <p className="font-medium text-sm sm:text-base">{selectedJob.company_name || 'N/A'}</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Items - Collapsible */}
-                <div className="border border-gray-200 rounded-lg overflow-hidden">
-                  <button
-                    onClick={() => toggleSection('items')}
-                    className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition"
-                  >
-                    <h3 className="text-base sm:text-lg font-semibold text-gray-900">Items</h3>
-                    {expandedSections.items ? (
-                      <ChevronUp className="h-5 w-5 text-gray-500" />
-                    ) : (
-                      <ChevronDown className="h-5 w-5 text-gray-500" />
-                    )}
-                  </button>
-                  {expandedSections.items && (
-                    <div className="p-4">
+                    <div>
+                      <p className="text-xs sm:text-sm font-semibold text-gray-700 mb-2">Items with Serial Number</p>
                       {selectedJob.items && selectedJob.items.length > 0 ? (
                         <div className="space-y-2">
                           {selectedJob.items.map((item, index) => (
-                            <div key={item.id || index} className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2 border-b border-gray-200 last:border-0 gap-1">
-                              <span className="font-medium text-sm sm:text-base">{item.name}</span>
-                              <span className="text-xs sm:text-sm text-gray-600">SN: {item.serial_number || 'N/A'}</span>
+                            <div key={item.id || index} className="bg-white p-3 rounded-lg border border-gray-200">
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                <div>
+                                  <p className="text-xs text-gray-600">Item Name</p>
+                                  <p className="font-medium text-sm">{item.name}</p>
+                                </div>
+                                <div>
+                                  <p className="text-xs text-gray-600">Serial Number</p>
+                                  <p className="font-medium text-sm">{item.serial_number || 'N/A'}</p>
+                                </div>
+                              </div>
                             </div>
                           ))}
                         </div>
                       ) : (
-                        <p className="text-gray-500 text-sm">No items listed</p>
+                        <p className="text-gray-500 text-sm bg-white px-3 py-2 rounded-lg">No items listed</p>
                       )}
                     </div>
-                  )}
+                    {selectedJob.original_case_number && (
+                      <div>
+                        <p className="text-xs sm:text-sm font-semibold text-gray-700 mb-1">Original Case Number</p>
+                        <p className="font-medium text-sm sm:text-base bg-white px-3 py-2 rounded-lg">{selectedJob.original_case_number}</p>
+                      </div>
+                    )}
+                    {selectedJob.clk_case_number && (
+                      <div>
+                        <p className="text-xs sm:text-sm font-semibold text-gray-700 mb-1">CLK Case Number</p>
+                        <p className="font-medium text-sm sm:text-base bg-white px-3 py-2 rounded-lg">{selectedJob.clk_case_number}</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
+                {/* Company */}
+                {selectedJob.company_name && (
+                  <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-4 sm:p-6 rounded-lg border border-purple-200">
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                      <span className="bg-purple-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">2</span>
+                      Company
+                    </h3>
+                    <div>
+                      <p className="text-xs sm:text-sm font-semibold text-gray-700 mb-1">Company Name</p>
+                      <p className="font-medium text-sm sm:text-base bg-white px-3 py-2 rounded-lg">{selectedJob.company_name}</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Shipping Information */}
+                <div className="bg-gradient-to-r from-green-50 to-teal-50 p-4 sm:p-6 rounded-lg border border-green-200">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <span className="bg-green-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">3</span>
+                    Shipping Information
+                  </h3>
+                  <div className="space-y-4">
                 {/* Shipping Timeline - Collapsible */}
-                <div className="border border-gray-200 rounded-lg overflow-hidden">
+                <div className="border border-gray-200 rounded-lg overflow-hidden bg-white">
                   <button
                     onClick={() => toggleSection('timeline')}
                     className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition"
@@ -1028,7 +1014,7 @@ const SearchPage: React.FC = () => {
 
                 {/* Tracking Details - Collapsible */}
                 {selectedJob.tracking_details?.tracking_number && (
-                  <div className="border border-gray-200 rounded-lg overflow-hidden">
+                  <div className="border border-gray-200 rounded-lg overflow-hidden bg-white">
                     <button
                       onClick={() => toggleSection('tracking')}
                       className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition"
@@ -1053,7 +1039,7 @@ const SearchPage: React.FC = () => {
 
                 {/* Confirmation - Collapsible */}
                 {(selectedJob.received_confirmation || selectedJob.sg || selectedJob.service_confirmation) && (
-                  <div className="border border-gray-200 rounded-lg overflow-hidden">
+                  <div className="border border-gray-200 rounded-lg overflow-hidden bg-white">
                     <button
                       onClick={() => toggleSection('confirmation')}
                       className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition"
@@ -1108,6 +1094,8 @@ const SearchPage: React.FC = () => {
                     )}
                   </div>
                 )}
+                  </div>
+                </div>
               </div>
 
               {/* Sticky Footer - Touch-friendly close button */}
