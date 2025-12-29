@@ -17,8 +17,10 @@ const DataEntryDashboard: React.FC = () => {
       case 'Job Completed':
         return 'bg-green-100 text-green-800';
       case 'Shipping Arranged from Singapore':
+      case 'Shipped from SG':
         return 'bg-blue-100 text-blue-800';
       case 'Received by CameraLK Representative':
+      case 'Received by CLK Rep':
         return 'bg-teal-100 text-teal-800';
       case 'Received to Singapore':
         return 'bg-purple-100 text-purple-800';
@@ -264,7 +266,9 @@ const DataEntryDashboard: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{formatDate(job.final_received_date)}</td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span className={`px-3 py-1.5 inline-flex text-xs leading-5 font-bold rounded-full shadow-sm border-2 ${getStatusColor(job.status)}`}>
-                                {job.status}
+                                {job.status === 'Shipping Arranged from Singapore' ? 'Shipped from SG' : 
+                                 job.status === 'Received by CameraLK Representative' ? 'Received by CLK Rep' : 
+                                 job.status}
                               </span>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -313,7 +317,9 @@ const DataEntryDashboard: React.FC = () => {
                             </div>
                           </div>
                           <span className={`ml-2 px-2.5 py-1.5 text-xs font-bold rounded-full flex-shrink-0 shadow-sm border-2 ${getStatusColor(job.status)}`}>
-                            {job.status}
+                            {job.status === 'Shipping Arranged from Singapore' ? 'Shipped from SG' : 
+                             job.status === 'Received by CameraLK Representative' ? 'Received by CLK Rep' : 
+                             job.status}
                           </span>
                         </div>
                         
