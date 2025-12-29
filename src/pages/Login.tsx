@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { toast } from 'react-toastify';
 import { LogIn, Mail, Lock, Eye, EyeOff, Camera, Package, Search, Shield, TrendingUp, Users, AlertCircle } from 'lucide-react';
@@ -218,9 +218,9 @@ const Login: React.FC = () => {
                 </div>
 
                 <div className="text-sm">
-                  <a href="#" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
+                  <Link to="/forgot-password" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
               </div>
 

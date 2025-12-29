@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\JobController;
+use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -10,6 +11,8 @@ use Illuminate\Support\Facades\Route;
 // Public routes
 // Route::post('/register', [AuthController::class, 'register']); // Disabled for internal use only
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/password/email', [PasswordResetController::class, 'sendResetLink']);
+Route::post('/password/reset', [PasswordResetController::class, 'reset']);
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
