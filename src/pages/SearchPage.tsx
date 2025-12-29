@@ -374,16 +374,10 @@ const SearchPage: React.FC = () => {
         {/* Search Header - Fully Responsive */}
         <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl border border-blue-100 p-3 sm:p-4 lg:p-6 mb-3 sm:mb-4 lg:mb-6 hover:shadow-2xl transition-shadow duration-300">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="p-2 sm:p-2.5 lg:p-3 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 rounded-lg sm:rounded-xl shadow-md sm:shadow-lg">
-                <Search className="h-5 w-5 sm:h-5 sm:w-5 lg:h-6 lg:w-6 text-white" />
-              </div>
-              <h1 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Job Tracking & Search</h1>
-            </div>
             <button
               onClick={handleResetPage}
               disabled={loading}
-              className="min-h-[40px] sm:min-h-[44px] px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold text-gray-700 bg-gray-100 border-2 border-gray-200 rounded-lg hover:bg-gray-200 hover:border-gray-300 transition-all shadow-sm flex items-center gap-1.5 sm:gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="ml-auto min-h-[40px] sm:min-h-[44px] px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold text-gray-700 bg-gray-100 border-2 border-gray-200 rounded-lg hover:bg-gray-200 hover:border-gray-300 transition-all shadow-sm flex items-center gap-1.5 sm:gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <X className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               <span className="hidden sm:inline">Reset Page</span>
