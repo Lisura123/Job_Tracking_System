@@ -991,7 +991,7 @@ const SearchPage: React.FC = () => {
                         { label: 'Received by CameraLK Representative', date: selectedJob.clk_received_date, person: selectedJob.clk_received_by_name },
                         { label: 'Shipping Arranged from Singapore Date', date: selectedJob.shipped_from_singapore_date },
                         { label: 'Service CameraLK Received Date', date: selectedJob.final_received_date, person: selectedJob.final_received_by_name },
-                      ].map((item, index) => (
+                      ].filter(item => item.date).map((item, index) => (
                         <div key={index} className="bg-gray-50 p-3 rounded-lg">
                           <div className="flex items-start gap-3">
                             <Calendar className="h-5 w-5 text-gray-400 flex-shrink-0 mt-0.5" />
@@ -1011,12 +1011,23 @@ const SearchPage: React.FC = () => {
                           </div>
                         </div>
                       ))}
+                      {![
+                        selectedJob.lk_shipped_date,
+                        selectedJob.company_received_date,
+                        selectedJob.supplier_shipping_date,
+                        selectedJob.warehouse_received_date,
+                        selectedJob.clk_received_date,
+                        selectedJob.shipped_from_singapore_date,
+                        selectedJob.final_received_date,
+                      ].some(date => date) && (
+                        <p className="text-gray-500 text-sm">No shipping timeline details available</p>
+                      )}
                     </div>
                   )}
                 </div>
 
                 {/* Tracking Details - Collapsible */}
-                {selectedJob.tracking_details && (
+                {selectedJob.tracking_details?.tracking_number && (
                   <div className="border border-gray-200 rounded-lg overflow-hidden">
                     <button
                       onClick={() => toggleSection('tracking')}
@@ -1033,7 +1044,7 @@ const SearchPage: React.FC = () => {
                       <div className="p-4">
                         <div>
                           <p className="text-xs sm:text-sm text-gray-600 mb-1">Tracking Number</p>
-                          <p className="font-medium text-sm sm:text-base break-all">{selectedJob.tracking_details.tracking_number || 'N/A'}</p>
+                          <p className="font-medium text-sm sm:text-base break-all">{selectedJob.tracking_details.tracking_number}</p>
                         </div>
                       </div>
                     )}
@@ -1041,72 +1052,62 @@ const SearchPage: React.FC = () => {
                 )}
 
                 {/* Confirmation - Collapsible */}
-                <div className="border border-gray-200 rounded-lg overflow-hidden">
-                  <button
-                    onClick={() => toggleSection('confirmation')}
-                    className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition"
-                  >
-                    <h3 className="text-base sm:text-lg font-semibold text-gray-900">Confirmation</h3>
-                    {expandedSections.confirmation ? (
-                      <ChevronUp className="h-5 w-5 text-gray-500" />
-                    ) : (
-                      <ChevronDown className="h-5 w-5 text-gray-500" />
-                    )}
-                  </button>
-                  {expandedSections.confirmation && (
-                    <div className="p-4 space-y-4">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div className="bg-gray-50 p-3 rounded-lg">
-                          <div className="flex items-center gap-2">
-                            {selectedJob.received_confirmation ? (
-                              <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                            ) : (
-                              <XCircle className="h-5 w-5 text-gray-400 flex-shrink-0" />
-                            )}
-                            <div>
-                              <p className="text-xs text-gray-600">Company Received Confirmation</p>
-                              <span className="font-medium text-sm">
-                                {selectedJob.received_confirmation ? 'Confirmed' : 'Pending'}
-                              </span>
+                {(selectedJob.received_confirmation || selectedJob.sg || selectedJob.service_confirmation) && (
+                  <div className="border border-gray-200 rounded-lg overflow-hidden">
+                    <button
+                      onClick={() => toggleSection('confirmation')}
+                      className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition"
+                    >
+                      <h3 className="text-base sm:text-lg font-semibold text-gray-900">Confirmation</h3>
+                      {expandedSections.confirmation ? (
+                        <ChevronUp className="h-5 w-5 text-gray-500" />
+                      ) : (
+                        <ChevronDown className="h-5 w-5 text-gray-500" />
+                      )}
+                    </button>
+                    {expandedSections.confirmation && (
+                      <div className="p-4 space-y-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          {selectedJob.received_confirmation && (
+                            <div className="bg-gray-50 p-3 rounded-lg">
+                              <div className="flex items-center gap-2">
+                                <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                                <div>
+                                  <p className="text-xs text-gray-600">Company Received Confirmation</p>
+                                  <span className="font-medium text-sm">Confirmed</span>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                        
-                        <div className="bg-gray-50 p-3 rounded-lg">
-                          <div className="flex items-center gap-2">
-                            {selectedJob.sg ? (
-                              <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                            ) : (
-                              <XCircle className="h-5 w-5 text-gray-400 flex-shrink-0" />
-                            )}
-                            <div>
-                              <p className="text-xs text-gray-600">SG</p>
-                              <span className="font-medium text-sm">
-                                {selectedJob.sg ? 'Confirmed' : 'Not Confirmed'}
-                              </span>
+                          )}
+                          
+                          {selectedJob.sg && (
+                            <div className="bg-gray-50 p-3 rounded-lg">
+                              <div className="flex items-center gap-2">
+                                <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                                <div>
+                                  <p className="text-xs text-gray-600">SG</p>
+                                  <span className="font-medium text-sm">Confirmed</span>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                        
-                        <div className="bg-gray-50 p-3 rounded-lg sm:col-span-2">
-                          <div className="flex items-center gap-2">
-                            {selectedJob.service_confirmation ? (
-                              <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                            ) : (
-                              <XCircle className="h-5 w-5 text-gray-400 flex-shrink-0" />
-                            )}
-                            <div>
-                              <p className="text-xs text-gray-600">Service CameraLK Received Confirmation</p>
-                              <span className="font-medium text-sm">
-                                {selectedJob.service_confirmation ? 'Confirmed' : 'Pending'}
-                              </span>
+                          )}
+                          
+                          {selectedJob.service_confirmation && (
+                            <div className="bg-gray-50 p-3 rounded-lg sm:col-span-2">
+                              <div className="flex items-center gap-2">
+                                <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                                <div>
+                                  <p className="text-xs text-gray-600">Service CameraLK Received Confirmation</p>
+                                  <span className="font-medium text-sm">Confirmed</span>
+                                </div>
+                              </div>
                             </div>
-                          </div>
+                          )}
                         </div>
                       </div>
-                    </div>
-                  )}
-                </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Sticky Footer - Touch-friendly close button */}
