@@ -261,6 +261,8 @@ const SearchPage: React.FC = () => {
       // Only pass advancedFilters if there are actual filter values (not just status)
       const hasAdvancedFilters = Object.keys(advancedFilters).length > 0;
       
+      console.log('Applying filters:', { status: statusFilter, advancedFilters, hasAdvancedFilters });
+      
       const response = await jobService.getAllJobs(
         page,
         statusFilter || undefined,
@@ -272,16 +274,17 @@ const SearchPage: React.FC = () => {
       setPagination({
         currentPage: response.current_page,
         lastPage: response.last_page,
-        total: response.data.length,
+        total: response.total,
       });
       
       if (response.data.length === 0) {
         toast.info('No jobs found matching your filters');
       } else {
-        toast.success(`Found ${response.data.length} job(s)`);
+        toast.success(`Found ${response.total} job(s)`);
       }
     } catch (error: any) {
-      toast.error('Failed to apply filters');
+      console.error('Filter error:', error);
+      toast.error(error.response?.data?.message || 'Failed to apply filters');
     } finally {
       setLoading(false);
     }

@@ -154,60 +154,70 @@ class JobController extends Controller
             // Apply filters based on status - must match exact priority in Job model
             switch ($status) {
                 case 'Job Completed':
-                    $query->whereNotNull('final_received_date')
-                          ->where('service_confirmation', true);
+                    // Priority 8: Has final_received_date
+                    $query->whereNotNull('final_received_date');
                     break;
                     
-                case 'Shipped from Singapore':
+                case 'Shipping Arranged from Singapore':
+                    // Priority 7: Has shipped_from_singapore_date but no final_received_date
                     $query->whereNotNull('shipped_from_singapore_date')
-                          ->whereNull('final_received_date')
-                          ->where('service_confirmation', false);
+                          ->whereNull('final_received_date');
                     break;
                     
-                case 'Singapore Processing':
-                    $query->where(function($q) {
-                        $q->whereNotNull('warehouse_received_date')
-                          ->orWhere('sg', true);
-                    })
-                    ->whereNull('shipped_from_singapore_date')
-                    ->whereNull('final_received_date')
-                    ->where('service_confirmation', false);
+                case 'Received by CameraLK Representative':
+                    // Priority 6: Has clk_received_date but no shipped_from_singapore_date and no final_received_date
+                    $query->whereNotNull('clk_received_date')
+                          ->whereNull('shipped_from_singapore_date')
+                          ->whereNull('final_received_date');
+                    break;
+                    
+                case 'Received to Singapore':
+                    // Priority 5: Has warehouse_received_date but no clk_received_date, shipped_from_singapore_date, and no final_received_date
+                    $query->whereNotNull('warehouse_received_date')
+                          ->whereNull('clk_received_date')
+                          ->whereNull('shipped_from_singapore_date')
+                          ->whereNull('final_received_date');
+                    break;
+                    
+                case 'Supplier Shipped':
+                    // Priority 4: Has supplier_shipping_date but no warehouse_received_date, clk_received_date, shipped_from_singapore_date, and no final_received_date
+                    $query->whereNotNull('supplier_shipping_date')
+                          ->whereNull('warehouse_received_date')
+                          ->whereNull('clk_received_date')
+                          ->whereNull('shipped_from_singapore_date')
+                          ->whereNull('final_received_date');
                     break;
                     
                 case 'Received to Company':
+                    // Priority 3: Has company_received_date but no supplier_shipping_date, warehouse_received_date, clk_received_date, shipped_from_singapore_date, and no final_received_date
                     $query->whereNotNull('company_received_date')
-                          ->where('received_confirmation', true)
+                          ->whereNull('supplier_shipping_date')
                           ->whereNull('warehouse_received_date')
-                          ->where('sg', false)
+                          ->whereNull('clk_received_date')
                           ->whereNull('shipped_from_singapore_date')
-                          ->whereNull('final_received_date')
-                          ->where('service_confirmation', false);
+                          ->whereNull('final_received_date');
                     break;
                     
                 case 'Shipped from CameraLK':
+                    // Priority 2: Has lk_shipped_date but no company_received_date, supplier_shipping_date, warehouse_received_date, clk_received_date, shipped_from_singapore_date, and no final_received_date
                     $query->whereNotNull('lk_shipped_date')
                           ->whereNull('company_received_date')
+                          ->whereNull('supplier_shipping_date')
                           ->whereNull('warehouse_received_date')
-                          ->where('sg', false)
+                          ->whereNull('clk_received_date')
                           ->whereNull('shipped_from_singapore_date')
-                          ->whereNull('final_received_date')
-                          ->where('service_confirmation', false);
+                          ->whereNull('final_received_date');
                     break;
                     
                 case 'Ongoing Job':
-                    $query->where(function($q) {
-                        $q->whereNull('lk_shipped_date')
-                          ->orWhere(function($q2) {
-                              $q2->whereNotNull('lk_shipped_date')
-                                 ->whereNull('company_received_date')
-                                 ->where('received_confirmation', false);
-                          });
-                    })
-                    ->whereNull('warehouse_received_date')
-                    ->where('sg', false)
-                    ->whereNull('shipped_from_singapore_date')
-                    ->whereNull('final_received_date')
-                    ->where('service_confirmation', false);
+                    // Priority 1: No dates set at all
+                    $query->whereNull('lk_shipped_date')
+                          ->whereNull('company_received_date')
+                          ->whereNull('supplier_shipping_date')
+                          ->whereNull('warehouse_received_date')
+                          ->whereNull('clk_received_date')
+                          ->whereNull('shipped_from_singapore_date')
+                          ->whereNull('final_received_date');
                     break;
             }
         }
