@@ -54,8 +54,10 @@ const SearchPage: React.FC = () => {
       case 'Job Completed':
         return 'bg-green-100 text-green-800 border-green-300';
       case 'Shipping Arranged from Singapore':
+      case 'Shipped from SG':
         return 'bg-blue-100 text-blue-800 border-blue-300';
       case 'Received by CameraLK Representative':
+      case 'Received by CLK Rep':
         return 'bg-teal-100 text-teal-800 border-teal-300';
       case 'Received to Singapore':
         return 'bg-purple-100 text-purple-800 border-purple-300';
@@ -692,8 +694,8 @@ const SearchPage: React.FC = () => {
                       <option value="Received to Company">3. Received to Company</option>
                       <option value="Supplier Shipped">4. Supplier Shipped</option>
                       <option value="Received to Singapore">5. Received to Singapore</option>
-                      <option value="Received by CameraLK Representative">6. Received by CameraLK Representative</option>
-                      <option value="Shipping Arranged from Singapore">7. Shipping Arranged from Singapore</option>
+                      <option value="Received by CameraLK Representative">6. Received by CLK Rep</option>
+                      <option value="Shipping Arranged from Singapore">7. Shipped from SG</option>
                       <option value="Job Completed">8. Job Completed</option>
                     </select>
                   </div>
