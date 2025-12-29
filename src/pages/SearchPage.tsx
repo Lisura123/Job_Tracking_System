@@ -798,7 +798,9 @@ const SearchPage: React.FC = () => {
                         </div>
                       </div>
                       <span className={`px-3 py-1.5 text-xs font-bold rounded-lg border-2 shadow-sm whitespace-nowrap flex-shrink-0 ${getStatusColor(job.status)}`}>
-                        {job.status}
+                        {job.status === 'Shipping Arranged from Singapore' ? 'Shipped from SG' : 
+                         job.status === 'Received by CameraLK Representative' ? 'Received by CLK Rep' : 
+                         job.status}
                       </span>
                     </div>
                     
