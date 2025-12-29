@@ -391,20 +391,25 @@ const SearchPage: React.FC = () => {
             </button>
           </div>
           
-          {/* Search Section - Mobile First */}
-          <div className="mb-3 sm:mb-4 pb-3 sm:pb-4 border-b border-gray-200">
-            <h3 className="text-xs sm:text-sm font-semibold text-gray-700 mb-2 sm:mb-3 flex items-center gap-1.5 sm:gap-2">
-              <span className="text-blue-600 text-sm sm:text-base">🔍</span>
-              Search Jobs
-            </h3>
-            <div className="flex flex-col gap-2 sm:gap-3">
-              <div className="w-full relative group" ref={suggestionRef}>
-                <div className="absolute inset-y-0 left-0 pl-2.5 sm:pl-3 flex items-center pointer-events-none">
-                  <Search className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+          {/* Search Section - Enhanced UI */}
+          <div className="mb-4 sm:mb-5 pb-4 sm:pb-5 border-b-2 border-gradient-to-r from-blue-100 to-indigo-100">
+            <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+              <div className="p-2 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg shadow-md">
+                <Search className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+              </div>
+              <div>
+                <h3 className="text-sm sm:text-base font-bold text-gray-900">Search Jobs</h3>
+                <p className="text-xs text-gray-500 hidden sm:block">Find jobs by number, customer, or contact</p>
+              </div>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+              <div className="flex-1 relative group" ref={suggestionRef}>
+                <div className="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none z-10">
+                  <Search className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 group-focus-within:text-blue-600 transition-colors" />
                 </div>
                 <input
                   type="text"
-                  className="block w-full pl-9 sm:pl-10 pr-3 py-2.5 sm:py-3 border-2 border-gray-200 rounded-lg leading-5 bg-white placeholder-gray-400 focus:outline-none focus:placeholder-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition-all hover:border-blue-300 shadow-sm"
+                  className="block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-3 sm:py-3.5 border-2 border-gray-200 rounded-xl leading-5 bg-gradient-to-r from-white to-gray-50 placeholder-gray-400 focus:outline-none focus:placeholder-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white text-sm sm:text-base transition-all hover:border-blue-300 hover:shadow-md shadow-sm font-medium"
                   placeholder="Search by Job Number, Customer Name, or Phone Number..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
@@ -412,24 +417,26 @@ const SearchPage: React.FC = () => {
                   onFocus={() => query.trim() && setShowSuggestions(true)}
                 />
                 
-                {/* Autocomplete Dropdown */}
+                {/* Autocomplete Dropdown - Enhanced */}
                 {showSuggestions && (suggestions.job_numbers.length > 0 || suggestions.customer_names.length > 0 || suggestions.phone_numbers.length > 0 || suggestions.original_case_numbers.length > 0 || suggestions.clk_case_numbers.length > 0) && (
-                  <div className="absolute z-50 w-full mt-1 bg-white border-2 border-gray-200 rounded-lg shadow-lg max-h-96 overflow-y-auto">
+                  <div className="absolute z-50 w-full mt-2 bg-white border-2 border-blue-200 rounded-xl shadow-2xl max-h-96 overflow-y-auto backdrop-blur-sm">
                     {/* Job Numbers */}
                     {suggestions.job_numbers.length > 0 && (
                       <div className="border-b border-gray-100">
-                        <div className="px-3 py-2 bg-gray-50 text-xs font-semibold text-gray-600 flex items-center gap-2">
-                          <Package className="h-3.5 w-3.5" />
+                        <div className="px-4 py-2.5 bg-gradient-to-r from-blue-50 to-indigo-50 text-xs font-bold text-blue-900 flex items-center gap-2">
+                          <Package className="h-4 w-4 text-blue-600" />
                           Job Numbers
                         </div>
                         {suggestions.job_numbers.map((jobNumber, index) => (
                           <button
                             key={`job-${index}`}
                             onClick={() => handleSuggestionClick(jobNumber)}
-                            className="w-full px-3 py-2 text-left hover:bg-blue-50 text-sm text-gray-700 transition-colors flex items-center gap-2"
+                            className="w-full px-4 py-2.5 text-left hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 text-sm text-gray-700 transition-all flex items-center gap-3 group border-b border-gray-50 last:border-0"
                           >
-                            <Package className="h-4 w-4 text-blue-500" />
-                            {jobNumber}
+                            <div className="p-1.5 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
+                              <Package className="h-3.5 w-3.5 text-blue-600" />
+                            </div>
+                            <span className="font-medium">{jobNumber}</span>
                           </button>
                         ))}
                       </div>
@@ -438,18 +445,20 @@ const SearchPage: React.FC = () => {
                     {/* Original Case Numbers */}
                     {suggestions.original_case_numbers.length > 0 && (
                       <div className="border-b border-gray-100">
-                        <div className="px-3 py-2 bg-gray-50 text-xs font-semibold text-gray-600 flex items-center gap-2">
-                          <Package className="h-3.5 w-3.5" />
+                        <div className="px-4 py-2.5 bg-gradient-to-r from-orange-50 to-amber-50 text-xs font-bold text-orange-900 flex items-center gap-2">
+                          <Package className="h-4 w-4 text-orange-600" />
                           Original Case Numbers
                         </div>
                         {suggestions.original_case_numbers.map((caseNumber, index) => (
                           <button
                             key={`original-${index}`}
                             onClick={() => handleSuggestionClick(caseNumber)}
-                            className="w-full px-3 py-2 text-left hover:bg-blue-50 text-sm text-gray-700 transition-colors flex items-center gap-2"
+                            className="w-full px-4 py-2.5 text-left hover:bg-gradient-to-r hover:from-orange-50 hover:to-amber-50 text-sm text-gray-700 transition-all flex items-center gap-3 group border-b border-gray-50 last:border-0"
                           >
-                            <Package className="h-4 w-4 text-orange-500" />
-                            {caseNumber}
+                            <div className="p-1.5 bg-orange-100 rounded-lg group-hover:bg-orange-200 transition-colors">
+                              <Package className="h-3.5 w-3.5 text-orange-600" />
+                            </div>
+                            <span className="font-medium">{caseNumber}</span>
                           </button>
                         ))}
                       </div>
@@ -458,18 +467,20 @@ const SearchPage: React.FC = () => {
                     {/* CLK Case Numbers */}
                     {suggestions.clk_case_numbers.length > 0 && (
                       <div className="border-b border-gray-100">
-                        <div className="px-3 py-2 bg-gray-50 text-xs font-semibold text-gray-600 flex items-center gap-2">
-                          <Package className="h-3.5 w-3.5" />
+                        <div className="px-4 py-2.5 bg-gradient-to-r from-indigo-50 to-purple-50 text-xs font-bold text-indigo-900 flex items-center gap-2">
+                          <Package className="h-4 w-4 text-indigo-600" />
                           CLK Case Numbers
                         </div>
                         {suggestions.clk_case_numbers.map((caseNumber, index) => (
                           <button
                             key={`clk-${index}`}
                             onClick={() => handleSuggestionClick(caseNumber)}
-                            className="w-full px-3 py-2 text-left hover:bg-blue-50 text-sm text-gray-700 transition-colors flex items-center gap-2"
+                            className="w-full px-4 py-2.5 text-left hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 text-sm text-gray-700 transition-all flex items-center gap-3 group border-b border-gray-50 last:border-0"
                           >
-                            <Package className="h-4 w-4 text-indigo-500" />
-                            {caseNumber}
+                            <div className="p-1.5 bg-indigo-100 rounded-lg group-hover:bg-indigo-200 transition-colors">
+                              <Package className="h-3.5 w-3.5 text-indigo-600" />
+                            </div>
+                            <span className="font-medium">{caseNumber}</span>
                           </button>
                         ))}
                       </div>
@@ -478,18 +489,20 @@ const SearchPage: React.FC = () => {
                     {/* Customer Names */}
                     {suggestions.customer_names.length > 0 && (
                       <div className="border-b border-gray-100">
-                        <div className="px-3 py-2 bg-gray-50 text-xs font-semibold text-gray-600 flex items-center gap-2">
-                          <User className="h-3.5 w-3.5" />
+                        <div className="px-4 py-2.5 bg-gradient-to-r from-green-50 to-emerald-50 text-xs font-bold text-green-900 flex items-center gap-2">
+                          <User className="h-4 w-4 text-green-600" />
                           Customer Names
                         </div>
                         {suggestions.customer_names.map((name, index) => (
                           <button
                             key={`name-${index}`}
                             onClick={() => handleSuggestionClick(name)}
-                            className="w-full px-3 py-2 text-left hover:bg-blue-50 text-sm text-gray-700 transition-colors flex items-center gap-2"
+                            className="w-full px-4 py-2.5 text-left hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 text-sm text-gray-700 transition-all flex items-center gap-3 group border-b border-gray-50 last:border-0"
                           >
-                            <User className="h-4 w-4 text-green-500" />
-                            {name}
+                            <div className="p-1.5 bg-green-100 rounded-lg group-hover:bg-green-200 transition-colors">
+                              <User className="h-3.5 w-3.5 text-green-600" />
+                            </div>
+                            <span className="font-medium">{name}</span>
                           </button>
                         ))}
                       </div>
@@ -498,18 +511,20 @@ const SearchPage: React.FC = () => {
                     {/* Phone Numbers */}
                     {suggestions.phone_numbers.length > 0 && (
                       <div>
-                        <div className="px-3 py-2 bg-gray-50 text-xs font-semibold text-gray-600 flex items-center gap-2">
-                          <Phone className="h-3.5 w-3.5" />
+                        <div className="px-4 py-2.5 bg-gradient-to-r from-purple-50 to-pink-50 text-xs font-bold text-purple-900 flex items-center gap-2">
+                          <Phone className="h-4 w-4 text-purple-600" />
                           Phone Numbers
                         </div>
                         {suggestions.phone_numbers.map((phone, index) => (
                           <button
                             key={`phone-${index}`}
                             onClick={() => handleSuggestionClick(phone)}
-                            className="w-full px-3 py-2 text-left hover:bg-blue-50 text-sm text-gray-700 transition-colors flex items-center gap-2"
+                            className="w-full px-4 py-2.5 text-left hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 text-sm text-gray-700 transition-all flex items-center gap-3 group border-b border-gray-50 last:border-0"
                           >
-                            <Phone className="h-4 w-4 text-purple-500" />
-                            {phone}
+                            <div className="p-1.5 bg-purple-100 rounded-lg group-hover:bg-purple-200 transition-colors">
+                              <Phone className="h-3.5 w-3.5 text-purple-600" />
+                            </div>
+                            <span className="font-medium">{phone}</span>
                           </button>
                         ))}
                       </div>
@@ -520,17 +535,19 @@ const SearchPage: React.FC = () => {
               <button
                 onClick={() => handleSearch()}
                 disabled={loading || !query.trim()}
-                className="w-full sm:w-auto min-h-[44px] px-5 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 font-medium text-sm sm:text-base shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 disabled:transform-none"
+                className="w-full sm:w-auto min-h-[48px] sm:min-h-[52px] px-6 sm:px-8 py-3 sm:py-3.5 bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 text-white rounded-xl hover:from-blue-700 hover:via-blue-800 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2.5 font-bold text-sm sm:text-base shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 active:scale-95 disabled:transform-none relative overflow-hidden group"
               >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                 {loading ? (
                   <>
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                    <span className="hidden sm:inline">Searching...</span>
+                    <Loader2 className="h-5 w-5 animate-spin relative z-10" />
+                    <span className="hidden sm:inline relative z-10">Searching...</span>
+                    <span className="sm:hidden relative z-10">Search</span>
                   </>
                 ) : (
                   <>
-                    <Search className="h-5 w-5" />
-                    <span>Search</span>
+                    <Search className="h-5 w-5 relative z-10" />
+                    <span className="relative z-10">Search</span>
                   </>
                 )}
               </button>
