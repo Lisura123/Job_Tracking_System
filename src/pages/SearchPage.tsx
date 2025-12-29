@@ -768,36 +768,38 @@ const SearchPage: React.FC = () => {
               )}
             </div>
 
-            <div className="space-y-2 sm:space-y-3">
+            <div className="space-y-3 sm:space-y-3">
               {jobs.map((job) => (
                 <div
                   key={job.id}
-                  className="bg-white border-2 border-gray-200 rounded-xl p-4 sm:p-5 hover:border-blue-400 hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                  className="bg-white border-2 border-gray-200 rounded-xl p-3 sm:p-5 hover:border-blue-400 hover:shadow-xl transition-all duration-300 cursor-pointer group"
                   onClick={() => handleViewDetails(job)}
                 >
                   <div className="flex flex-col gap-3">
-                    {/* Header Row - Job Number & Status */}
-                    <div className="flex items-start sm:items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
-                      <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <div className="p-2.5 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl shadow-md flex-shrink-0">
-                          <Package className="h-5 w-5 text-white" />
+                    {/* Header Row - Job Number & Icon */}
+                    <div className="flex items-start gap-2.5 sm:gap-3">
+                      <div className="p-2 sm:p-2.5 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg sm:rounded-xl shadow-md flex-shrink-0">
+                        <Package className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-bold text-gray-900 text-sm sm:text-base lg:text-lg">{job.job_number}</span>
+                          {job.clk_case_number && (
+                            <span className="text-xs px-2 sm:px-2.5 py-0.5 bg-gradient-to-r from-indigo-100 to-indigo-200 text-indigo-700 rounded-full font-semibold border border-indigo-300">
+                              {job.clk_case_number}
+                            </span>
+                          )}
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <span className="font-bold text-gray-900 text-base sm:text-lg">{job.job_number}</span>
-                            {job.clk_case_number && (
-                              <span className="text-xs px-2.5 py-0.5 bg-gradient-to-r from-indigo-100 to-indigo-200 text-indigo-700 rounded-full font-semibold border border-indigo-300">
-                                {job.clk_case_number}
-                              </span>
-                            )}
-                          </div>
-                          <div className="flex items-center gap-2 mt-1.5">
-                            <User className="h-3.5 w-3.5 text-gray-400 flex-shrink-0" />
-                            <span className="text-sm text-gray-700 font-medium truncate">{job.customer.name}</span>
-                          </div>
+                        <div className="flex items-center gap-1.5 sm:gap-2 mt-1 sm:mt-1.5">
+                          <User className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-gray-400 flex-shrink-0" />
+                          <span className="text-xs sm:text-sm text-gray-700 font-medium truncate">{job.customer.name}</span>
                         </div>
                       </div>
-                      <span className={`px-3 py-1.5 text-xs font-bold rounded-lg border-2 shadow-sm whitespace-nowrap flex-shrink-0 ${getStatusColor(job.status)}`}>
+                    </div>
+                    
+                    {/* Status Badge - Full Width on Mobile */}
+                    <div className="flex items-center">
+                      <span className={`w-full sm:w-auto text-center px-3 py-1.5 sm:py-2 text-xs sm:text-xs font-bold rounded-lg border-2 shadow-sm ${getStatusColor(job.status)}`}>
                         {job.status === 'Shipping Arranged from Singapore' ? 'Shipped from SG' : 
                          job.status === 'Received by CameraLK Representative' ? 'Received by CLK Rep' : 
                          job.status}
@@ -805,10 +807,10 @@ const SearchPage: React.FC = () => {
                     </div>
                     
                     {/* View Details Link */}
-                    <div className="flex items-center justify-end pt-2 border-t border-gray-100 mt-1">
-                      <span className="text-sm font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1.5 transition-all group-hover:gap-2">
+                    <div className="flex items-center justify-center sm:justify-end pt-2 sm:pt-2 border-t border-gray-100">
+                      <span className="text-xs sm:text-sm font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1.5 transition-all group-hover:gap-2">
                         View Full Details
-                        <ChevronDown className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
+                        <ChevronDown className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform group-hover:translate-y-0.5" />
                       </span>
                     </div>
                   </div>
