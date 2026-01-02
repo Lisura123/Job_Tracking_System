@@ -825,6 +825,10 @@ const SearchPage: React.FC = () => {
                           <User className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-gray-400 flex-shrink-0" />
                           <span className="text-xs sm:text-sm text-gray-700 font-medium truncate">{job.customer.name}</span>
                         </div>
+                        <div className="flex items-center gap-1.5 sm:gap-2 mt-1">
+                          <Calendar className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-gray-400 flex-shrink-0" />
+                          <span className="text-xs text-gray-500">Added: {formatDate(job.created_at)}</span>
+                        </div>
                       </div>
                     </div>
                     
