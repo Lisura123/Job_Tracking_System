@@ -370,7 +370,8 @@ class JobController extends Controller
             );
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => 'Failed to update job', 'message' => $e->getMessage(), 'trace' => $e->getTraceAsString()], 500);
+            \Log::error('Job update failed: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to update job'], 500);
         }
     }
 
