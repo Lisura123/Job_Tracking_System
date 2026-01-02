@@ -514,7 +514,7 @@ const JobForm: React.FC<JobFormProps> = ({ job, onClose }) => {
                   <input
                     type="text"
                     list="tracking-numbers"
-                    className="px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all hover:border-green-400"
+                    className="px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all hover:border-green-400 disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
                     value={formData.tracking?.tracking_number || ''}
                     onChange={(e) =>
                       setFormData({
@@ -522,7 +522,9 @@ const JobForm: React.FC<JobFormProps> = ({ job, onClose }) => {
                         tracking: { ...formData.tracking, tracking_number: e.target.value },
                       })
                     }
-                    placeholder="Enter tracking number"
+                    placeholder="Enter shipping method first"
+                    disabled={!formData.supplier_shipping_method}
+                    title={!formData.supplier_shipping_method ? "Please enter shipping method before adding tracking number" : ""}
                   />
                   <datalist id="tracking-numbers">
                     {trackingNumbers.map((number, idx) => (
