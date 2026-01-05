@@ -236,8 +236,8 @@ class JobController extends Controller
             'job_number' => 'required|string|unique:jobs',
             'customer_id' => 'required|exists:customers,id',
             'company_name' => 'required|string',
-            'original_case_number' => 'nullable|string',
-            'clk_case_number' => 'nullable|string',
+            'original_case_number' => 'nullable|string|unique:jobs,original_case_number',
+            'clk_case_number' => 'nullable|string|unique:jobs,clk_case_number',
             'lk_shipped_date' => 'nullable|date',
             'lk_shipping_method' => 'nullable|string',
             'supplier_shipping_method' => 'nullable|string',
@@ -257,6 +257,9 @@ class JobController extends Controller
             'tracking' => 'nullable|array',
             'tracking.shipping_agent_name' => 'nullable|string',
             'tracking.tracking_number' => 'nullable|string',
+        ], [
+            'original_case_number.unique' => 'A job with this Original Case Number already exists.',
+            'clk_case_number.unique' => 'A job with this CLK Case Number already exists.',
         ]);
 
         DB::beginTransaction();
@@ -308,8 +311,8 @@ class JobController extends Controller
             'job_number' => 'sometimes|string|unique:jobs,job_number,' . $id,
             'customer_id' => 'sometimes|exists:customers,id',
             'company_name' => 'required|string',
-            'original_case_number' => 'nullable|string',
-            'clk_case_number' => 'nullable|string',
+            'original_case_number' => 'nullable|string|unique:jobs,original_case_number,' . $id,
+            'clk_case_number' => 'nullable|string|unique:jobs,clk_case_number,' . $id,
             'lk_shipped_date' => 'nullable|date',
             'lk_shipping_method' => 'nullable|string',
             'supplier_shipping_method' => 'nullable|string',
@@ -330,6 +333,9 @@ class JobController extends Controller
             'tracking' => 'nullable|array',
             'tracking.shipping_agent_name' => 'nullable|string',
             'tracking.tracking_number' => 'nullable|string',
+        ], [
+            'original_case_number.unique' => 'A job with this Original Case Number already exists.',
+            'clk_case_number.unique' => 'A job with this CLK Case Number already exists.',
         ]);
 
         DB::beginTransaction();
