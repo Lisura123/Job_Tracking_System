@@ -13,13 +13,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('jobs', function (Blueprint $table) {
-            // Add unique index for original_case_number (allowing nulls)
-            $table->unique('original_case_number', 'jobs_original_case_number_unique');
-            
-            // Add unique index for clk_case_number (allowing nulls)
-            $table->unique('clk_case_number', 'jobs_clk_case_number_unique');
-        });
+        try {
+            Schema::table('jobs', function (Blueprint $table) {
+                // Add unique index for original_case_number (allowing nulls)
+                $table->unique('original_case_number', 'jobs_original_case_number_unique');
+                
+                // Add unique index for clk_case_number (allowing nulls)
+                $table->unique('clk_case_number', 'jobs_clk_case_number_unique');
+            });
+        } catch (\Throwable $e) {
+            // Index may already exist
+        }
     }
 
     /**
