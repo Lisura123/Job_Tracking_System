@@ -110,7 +110,7 @@ const JobForm: React.FC<JobFormProps> = ({ job, onClose }) => {
         supplier_shipping_date: formatDateForInput(job.supplier_shipping_date),
         warehouse_received_date: formatDateForInput(job.warehouse_received_date),
         clk_received_date: formatDateForInput(job.clk_received_date),
-        received_confirmation_by: job.received_confirmation_by || '',
+        received_confirmation_by: formatDateForInput(job.received_confirmation_by) || job.received_confirmation_by || '',
         sg: job.sg || false,
         sg_received_by_name: job.sg_received_by_name || '',
         shipped_from_singapore_date: formatDateForInput(job.shipped_from_singapore_date),
